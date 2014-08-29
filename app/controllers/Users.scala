@@ -21,6 +21,20 @@ object Users extends Controller with MongoController{
     (__ \ "yoAccount").read[Seq[String]]
   )
 
+  def me = Action.async { request =>
+    request.session.get("login")
+            .map { login => User.get(login) }
+            .getOrElse(Future.successful(None))
+            .map {
+              case Some(user) => Ok(user.toJson)
+              case _          => Forbidden("You shall login")
+            }
+  }
+
+  def login(login: String) = Action {
+    Ok("Connected").withSession("login" -> login)
+  }
+
   def create = Action.async(parse.json[User]) { request =>
     User.create(request.body)
         .map(lastError => Created("Mongo LastError: %s".format(lastError)) )

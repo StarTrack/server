@@ -5,6 +5,9 @@
 # Home page
 GET     /                           controllers.Application.index
 
+GET     /users/me                   controllers.Users.me
+POST    /users/me/:login            controllers.Users.login(login: String)
+
 POST    /users                      controllers.Users.create
 PUT     /users/:login               controllers.Users.update(login: String)
 GET     /users/:yoAccount           controllers.Users.find(yoAccount: String)
