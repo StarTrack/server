@@ -38,7 +38,6 @@ object Spotify extends Controller {
     } recover {
       case msg: Exception => BadRequest(msg.toString)
     }
-
   }
 
   private def authenticationSuccess(tokens: Tokens, spotifyUser: SpotifyUser): Future[User] = {
