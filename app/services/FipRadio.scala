@@ -26,6 +26,7 @@ case class Track( startTime: Long,
 
 object Track {
   implicit val reader = Json.reads[Track]
+  implicit val writer = Json.writes[Track]
 }
 
 case class FipPlayer(current: Track)

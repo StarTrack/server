@@ -3,6 +3,7 @@ package controllers
 import play.api._
 import play.api.mvc._
 import play.api.Play.current
+import play.api.libs.json._
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -13,6 +14,11 @@ import services._
 object Yo extends Controller {
 
   val yoToken = Play.configuration.getString("yo.token").getOrElse("")
+
+
+  def track = Action.async {
+    FipRadio.currentTrack.map { track => Ok( Json.toJson(track) ) }
+  }
 
   def yo(token: String, yoAccount: String) = Action.async {
     if( yoToken != token ) {
