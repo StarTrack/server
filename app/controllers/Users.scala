@@ -13,6 +13,7 @@ import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
 
 import models.User
+import services.spotify.SpotifyWS
 
 object Users extends Controller with MongoController{
   def collection: JSONCollection = db.collection[JSONCollection]("users")
@@ -25,9 +26,19 @@ object Users extends Controller with MongoController{
     request.session.get("login")
             .map { login => User.get(login) }
             .getOrElse(Future.successful(None))
-            .map {
-              case Some(user) => Ok(user.toJson)
-              case _          => Forbidden("You shall login")
+            .flatMap {
+
+              case Some(user) => {
+                val playlists = SpotifyWS.playlists(user.login, user.accessToken)
+                playlists.map { pls =>
+                  Ok(
+                    user.toJson ++ Json.obj( "playlists" -> Json.toJson(pls) )
+                  )
+                }
+
+              }
+
+              case _          => Future.successful(Forbidden("You shall login"))
             }
   }
 

@@ -18,7 +18,11 @@ object Conf {
   val redirect_uri = "http://localhost:9000/callback";
   val spotify_authorize = "https://accounts.spotify.com/authorize"
   val spotify_token = "https://accounts.spotify.com/api/token"
+
+  val user_info_endpoint = "https://api.spotify.com/v1/me"
+  val playlists_endpoint = "https://api.spotify.com/v1/users/%s/playlists"
 }
+
 case class Tokens(
   access_token: String,
   refresh_token: String
@@ -31,6 +35,15 @@ case class SpotifyUser(
 
 object SpotifyUser {
   implicit val reader = Json.reads[SpotifyUser]
+}
+
+case class Playlist(
+  id: String,
+  name: String
+)
+
+object Playlist {
+  implicit val format = Json.format[Playlist]
 }
 
 object SpotifyWS {
@@ -78,17 +91,35 @@ object SpotifyWS {
     }
   }
 
-
-  def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
+  private def wsWithAuth(url: String, access_token: String) = {
     val headers = ("Authorization" -> s"Bearer $access_token")
 
-    WS.url("https://api.spotify.com/v1/me").withHeaders(headers).get().flatMap { response =>
+    WS.url(url).withHeaders(headers)
+  }
+
+  def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
+    val url = Conf.user_info_endpoint
+
+    wsWithAuth(url, access_token).get.flatMap { response =>
       response.status match {
         case 200 => {
           val parsed = Json.parse(response.body)
           Future.successful(parsed.as[SpotifyUser])
         }
-        case _ => Future.failed(new Exception("Spotify id is bad"))
+        case _ => Future.failed(new Exception("Spotify user id bad status"))
+      }
+    }
+  }
+
+  def playlists(login: String, access_token: String): Future[Seq[Playlist]] = {
+    val url = Conf.playlists_endpoint.format( login )
+
+    wsWithAuth(url, access_token).get.flatMap { response =>
+      response.status match {
+        case 200 =>
+          val parsed = Json.parse(response.body)
+          Future.successful( (parsed \ "items").as[Seq[Playlist]] )
+        case _ => Future.failed(new Exception("Spotify playlists bad status"))
       }
     }
   }
