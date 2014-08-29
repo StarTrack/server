@@ -17,12 +17,31 @@ import models.User
 object Users extends Controller with MongoController{
   def collection: JSONCollection = db.collection[JSONCollection]("users")
 
-  def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+  val updateReads = (
+    (__ \ "yoAccount").read[Seq[String]]
+  )
+
+  def me = Action.async { request =>
+    request.session.get("login")
+            .map { login => User.get(login) }
+            .getOrElse(Future.successful(None))
+            .map {
+              case Some(user) => Ok(user.toJson)
+              case _          => Forbidden("You shall login")
+            }
+  }
+
+  def login(login: String) = Action {
+    Ok("Connected").withSession("login" -> login)
   }
 
   def create = Action.async(parse.json[User]) { request =>
     User.create(request.body)
+        .map(lastError => Created("Mongo LastError: %s".format(lastError)) )
+  }
+
+  def update(login: String) = Action.async(parse.json(updateReads)) { request =>
+    User.update(login, request.body)
         .map(lastError => Created("Mongo LastError: %s".format(lastError)) )
   }
 
