@@ -15,11 +15,6 @@ object Yo extends Controller {
 
   val yoToken = Play.configuration.getString("yo.token").getOrElse("")
 
-
-  def track = Action.async {
-    FipRadio.currentTrack.map { track => Ok( Json.toJson(track) ) }
-  }
-
   def yo(token: String, yoAccount: String) = Action.async {
     if( yoToken != token ) {
       Future.successful(BadRequest("Invalid token"))

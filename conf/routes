@@ -5,7 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index
 
-GET     /track                      controllers.Yo.track
+GET     /tracks/current             controllers.Tracks.track
+
 GET     /yo/:token                  controllers.Yo.yo(token: String, username: String)
 
 GET     /users/me                   controllers.Users.me

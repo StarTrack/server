@@ -6,21 +6,61 @@ var Cockpit = React.createClass({
       };
   },
   render:function(){
-    console.log(this.state);
     var debouncedSend = _.debounce( this.sendYoers, 200 );
     var options = _.map(this.props.user.playlists, function(p){
       return <option id={p.id}>{p.name}</option>;
     });
-    return <section className="yoers">
-      <div className="yoer10">IF
-      <input className="yoUser" type="text" placeholder="Yo username" onKeyUp={debouncedSend}/>
-       Yoes FIP
-       then save to playlist&nbsp;
-       <select className="playlist">
-        {options}
-       </select>
+    return <div>
+      <section className="section green">
+        <div class="container">
+          <p>IF
+            <input autofocus className="yoUser" type="text" placeholder="Yo username" onKeyUp={debouncedSend}/>
+            Yoes FIP <br/>
+            then save the current track <br/>to this playlist&nbsp;
+            <select className="playlist">
+            {options}
+            </select>
+          </p>
+        </div>
+      </section>
+    <section className="section history">
+      <div className="container">
+        <h2>STARRED TRACKS HISTORY</h2>
+        <table>
+          <tr>
+            <th>WHEN</th>
+            <th>WHO</th>
+            <th>WHAT</th>
+            <th>STATUS</th>
+          </tr>
+          <tr>
+            <td>2014-29-08 01:32PM</td>
+            <td>MIOSSEC</td>
+            <td>BOIRE</td>
+            <td>OK</td>
+          </tr>
+          <tr>
+            <td>2014-29-08 01:32PM</td>
+            <td>MIOSSEC</td>
+            <td>BAISER</td>
+            <td>FAILED</td>
+          </tr>
+          <tr>
+            <td>2014-29-08 01:32PM</td>
+            <td>MIOSSEC</td>
+            <td>BAISER</td>
+            <td>FAILED</td>
+          </tr>
+          <tr>
+            <td>2014-29-08 01:32PM</td>
+            <td>MIOSSEC</td>
+            <td>BAISER</td>
+            <td>FAILED</td>
+          </tr>
+        </table>
       </div>
-    </section>;
+    </section>
+    </div>
   },
   componentWillReceiveProps: function( props ){
     this.setState({
@@ -35,7 +75,7 @@ var Cockpit = React.createClass({
     });
     jQuery.ajax({
       method: 'PUT',
-      url: '/users/'+this.state.user.login,
+      url: '/users/'+this.props.user.login,
       data: data,
       contentType:'application/json'
     }).then( function(){
