@@ -20,7 +20,8 @@ case class User(
 
   def toJson = Json.obj(
     "login"      -> login,
-    "yoAccounts" -> yoAccounts
+    "yoAccounts" -> yoAccounts,
+    "playlistId" -> playlistId
   )
 }
 
@@ -35,19 +36,19 @@ object User {
   def update(login: String, accessToken: String, refreshToken: String): Future[LastError] =
     collection.update(
       selector = Json.obj("login" -> login),
-      update   = Json.obj(
+      update   = Json.obj( "$set" -> Json.obj(
         "accessToken"  -> accessToken,
         "refreshToken" -> refreshToken
-      )
+      ))
     )
 
   def update(login: String, yoAccounts: Seq[String], playlistId: Option[String]): Future[LastError] =
     collection.update(
       selector = Json.obj("login" -> login),
-      update   = Json.obj(
+      update   = Json.obj( "$set" -> Json.obj(
         "yoAccounts"  -> yoAccounts,
         "playlistId"  -> playlistId
-      )
+      ))
     )
 
   def get(login: String): Future[Option[User]] =

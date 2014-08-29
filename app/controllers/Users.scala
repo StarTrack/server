@@ -19,7 +19,7 @@ object Users extends Controller with MongoController{
   def collection: JSONCollection = db.collection[JSONCollection]("users")
 
   val updateReads = (
-    (__ \ "yoAccount").read[Seq[String]] and
+    (__ \ "yoAccounts").read[Seq[String]] and
     (__ \ "playlistId").readNullable[String]
   ).tupled
 
