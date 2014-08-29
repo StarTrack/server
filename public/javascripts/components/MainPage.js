@@ -26,6 +26,7 @@ var MainPage = React.createClass({
     return <div>
       <Header/>
       {currentPage}
+      <Startrek/>
     </div>
-  } 
+  }
 });
