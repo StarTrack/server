@@ -7,6 +7,8 @@ var Home = React.createClass({
       };
   },
   render:function(){
-    return <h1>Star track</h1>;
+    return <div className="yoers">
+      <a className="fat-button" href="/auth">LOG ME WITH SPOTIFY</a>
+    </div>
   } 
 });
