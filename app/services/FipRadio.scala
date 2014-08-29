@@ -28,12 +28,7 @@ object Track {
   implicit val reader = Json.reads[Track]
 }
 
-case class FipPlayer(
-                      current: Track,
-                      previous1: Track,
-                      previous2: Track,
-                      next1: Track,
-                      next2: Track)
+case class FipPlayer(current: Track)
 
 object FipRadio {
   private var cachedResponse: Option[FipPlayer] = None
@@ -58,12 +53,8 @@ object FipRadio {
     WS.url(apiURL).get().map { response =>
       val json = response.json
       val currentTrack = json.\("current").\("song").as[Track]
-      val p1Track = json.\("previous1").\("song").as[Track]
-      val p2Track = json.\("previous2").\("song").as[Track]
-      val n1Track = json.\("next1").\("song").as[Track]
-      val n2Track = json.\("next2").\("song").as[Track]
 
-      val p = FipPlayer(currentTrack, p1Track, p2Track, n1Track, n2Track)
+      val p = FipPlayer(currentTrack)
 
       //println(p)
       cachedResponse = Some(p)
