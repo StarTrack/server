@@ -1,10 +1,9 @@
+import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
-import org.junit.runner._
-
-import play.api.test._
 import play.api.test.Helpers._
-import services.FipRadio
+import play.api.test._
+import services.SpotifySearch
 
 import scala.concurrent.Await
 
@@ -29,11 +28,16 @@ class ApplicationSpec extends Specification {
       contentType(home) must beSome.which(_ == "text/html")
       contentAsString(home) must contain ("Your new application is ready.")
     }
-
+/*
     "test fip"  in new WithApplication{
       val f = FipRadio.currentTrack()
       val r = Await.result(f, scala.concurrent.duration.Duration(30, "seconds"))
       val r2 = Await.result(FipRadio.currentTrack(), scala.concurrent.duration.Duration(1, "seconds"))
+    }
+*/
+    "test spotify search"  in new WithApplication{
+      val f = SpotifySearch.search(artist = "Duke Ellington", track = "ISFAHAN")
+      val r = Await.result(f, scala.concurrent.duration.Duration(30, "seconds"))
     }
   }
 }
