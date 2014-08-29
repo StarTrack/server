@@ -15,5 +15,7 @@ var Cockpit = React.createClass({
          <span className="playlist">Toto</span>
 	</div>
     </section>;
+  },
+  sendYoers: function(){ 
   }
 });
