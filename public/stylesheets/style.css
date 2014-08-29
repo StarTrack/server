@@ -47,20 +47,24 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 	width: 100%;
-	background: #55B496;
+	background: transparent;
+	margin-top: 40px;
 }
 
-td {
+td, th {
 	padding: 20px;
 	text-align: center;
+	font-size: 20px;
+	font-weight: normal;
 }
 
+
+
+tr:nth-child(2n+1){
+  background-color: rgba(255,255,255,0.2);
+}
 tr:first-of-type {
-  background-color: #F0C700;
-}
-
-tr:nth-child(2n){
-  background-color: #09997D;
+  background-color: rgba(0,0,0,0.2);
 }
 
 
@@ -75,7 +79,12 @@ body, html {
 	font-family: 'Montserrat', sans-serif;
 	width: 100%;
 	background: #9B59B6;
+	background: #cc3028;
 
+}
+
+p{
+	line-height: 1.8em;
 }
 
 .wrapper {
@@ -135,18 +144,22 @@ header h2:hover {
 }
 
 input {
-	background-color: #E83F42;
-	border: 0px;
-	width: 250px;
+	border: solid 1px #FFF;
+	width: 300px;
 	height: 100%;
-	padding: 20px;
+	padding: 10px 20px;
+	margin: 0px 10px;
 	font-size: 32px;
 	color: #FFF;
+	background: transparent;
 }
 
 input:focus {
     background-color: #F0C700;
    	color: #FFF;
+   	outline: none;
+   	border-color: transparent;
+   	box-shadow: none;
 }
 
 select {
@@ -180,25 +193,33 @@ select:focus {
 	background: rgba(0,0,0,0.1);
 }
 
-.yoers {
+.section {
 	text-align: center;
 	width: 100%;
 	color: #FFF;
 	font-size: 32px;
-	background: #09997D;
-	background: #81b71a;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
 }
 
-.yoers.yoer10{
+.section.spotigreen{
+	background: #81b71a;
+}
+
+.section.green{
 	font-weight: normal;
-	background: #09997D;
+	background: #1e76a9;
 	padding: 30px 0px;
 }
 
+.section.history{
+	margin-top: 40px;
+}
+
+.section.startrek{
+	padding-top: 50px;
+}
+.section.startrek img{
+	width: 100%;
+}
 .yoers.yoer9 {
 	font-weight: bold;
 	background: #34485F;
