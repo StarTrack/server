@@ -13,7 +13,7 @@ import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
 
 import models.User
-import services.spotify.SpotifyWS
+import services.SpotifyWS
 
 object Users extends Controller with MongoController{
   def collection: JSONCollection = db.collection[JSONCollection]("users")
