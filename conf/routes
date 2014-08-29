@@ -6,6 +6,8 @@
 GET     /                           controllers.Application.index
 
 GET     /tracks/current             controllers.Tracks.track
+GET     /tracks/spotify             controllers.Tracks.spotifyTrack
+GET     /tracks/cover               controllers.Tracks.cover
 
 GET     /yo/:token                  controllers.Yo.yo(token: String, username: String)
 

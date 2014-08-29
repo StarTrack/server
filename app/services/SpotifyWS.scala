@@ -22,6 +22,8 @@ object Conf {
   val user_info_endpoint = "https://api.spotify.com/v1/me"
   val playlists_endpoint = "https://api.spotify.com/v1/users/%s/playlists"
   val add_track_endpoint = "https://api.spotify.com/v1/users/%s/playlists/%s/tracks"
+
+  val track_info_endpoint = "https://api.spotify.com/v1/tracks/%s"
 }
 
 case class Tokens(
@@ -139,6 +141,13 @@ object SpotifyWS {
     }.getOrElse( Future.successful("No playList") )
   }
 
+  def trackInfos(trackId: String): Future[JsValue] = {
+    val cleanId = trackId.replace("spotify:track:", "")
+
+    WS.url(Conf.track_info_endpoint.format(cleanId))
+      .get
+      .map( _.json )
+  }
 
 }
 
