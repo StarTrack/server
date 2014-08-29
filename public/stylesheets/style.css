@@ -1,4 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -12,8 +12,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -24,7 +24,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -89,21 +89,21 @@ body, html {
 
 .container {
 	width: 1200px;
-	margin: 0 auto;
+	margin: 0px auto;
 }
 
 header {
 	background-color: #2B83B6;
+	background-color: #f1c232;
 	width: 100%;
-	height: 100%;
 	padding: 1px;
 	text-align: center;
 }
 
 header h1 {
 	font-size: 60px;
-	font-weight: bold;
-	padding: 10px;
+	font-weight: 100;
+	padding: 30px;
 }
 
 header h2 {
@@ -147,7 +147,7 @@ input {
 input:focus {
     background-color: #F0C700;
    	color: #FFF;
-} 
+}
 
 select {
 	background-color: #E83F42;
@@ -162,40 +162,44 @@ select {
 select:focus {
     background-color: #F0C700;
    	color: #FFF;
-} 
+}
 
 .fat-button {
   display: block;
-  padding: 20px;
   margin: auto;
   color: black;
-  background: #81b71a;
+
   height: 200px;
-  width: 300px;
+  line-height: 200px;
+  vertical-align: middle;
+  /*width: 300px;*/
   border : none;
-  font-size: xx-large;
+  text-decoration: none;
+}
+.fat-button:hover{
+	background: rgba(0,0,0,0.1);
 }
 
 .yoers {
 	text-align: center;
-	height: 100%;
 	width: 100%;
 	color: #FFF;
 	font-size: 32px;
 	background: #09997D;
-	-webkit-background-size: cover; 
-	-moz-background-size: cover; 
-	-o-background-size: cover; 
+	background: #81b71a;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
 	background-size: cover;
 }
 
-.yoers .yoer10{
-	font-weight: bold;
+.yoers.yoer10{
+	font-weight: normal;
 	background: #09997D;
-	width: 1200px;
+	padding: 30px 0px;
 }
 
-.yoers .yoer9 {
+.yoers.yoer9 {
 	font-weight: bold;
 	background: #34485F;
 	width: 95%;
@@ -205,7 +209,7 @@ select:focus {
 
 }
 
-.yoers .yoer8 {
+.yoers.yoer8 {
 	font-weight: bold;
 	background: #F0C700;
 	width: 90%;
@@ -281,19 +285,19 @@ select:focus {
     animation-iteration-count: infinite;
 }
 
-@-moz-keyframes blinker {  
+@-moz-keyframes blinker {
     0% { opacity: 1.0; }
     50% { opacity: 0.0; }
     100% { opacity: 1.0; }
 }
 
-@-webkit-keyframes blinker {  
+@-webkit-keyframes blinker {
     0% { opacity: 1.0; }
     50% { opacity: 0.0; }
     100% { opacity: 1.0; }
 }
 
-@keyframes blinker {  
+@keyframes blinker {
     0% { opacity: 1.0; }
     50% { opacity: 0.0; }
     100% { opacity: 1.0; }
