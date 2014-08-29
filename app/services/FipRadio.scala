@@ -22,7 +22,11 @@ case class Track(
                   interpreteMorceau: String,
                   anneeEditionMusique: Option[String], //missing sometimes
                   visuel: Visuel,
-                  lien: String)
+                  lien: String) {
+  def start: DateTime = new DateTime(startTime)
+
+  def end: DateTime = new DateTime(endTime)
+}
 
 object Track {
   implicit val reader = Json.reads[Track]
@@ -51,7 +55,6 @@ object FipRadio {
   } else {
     getPlayerCurrent
   }
-
 
   val apiURL = "http://www.fipradio.fr/sites/default/files/import_si/si_titre_antenne/FIP_player_current.json"
 
