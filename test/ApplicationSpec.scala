@@ -4,6 +4,9 @@ import org.junit.runner._
 
 import play.api.test._
 import play.api.test.Helpers._
+import services.FipRadio
+
+import scala.concurrent.Await
 
 /**
  * Add your spec here.
@@ -25,6 +28,12 @@ class ApplicationSpec extends Specification {
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
       contentAsString(home) must contain ("Your new application is ready.")
+    }
+
+    "test fip"  in new WithApplication{
+      val f = FipRadio.currentTrack()
+      val r = Await.result(f, scala.concurrent.duration.Duration(30, "seconds"))
+      val r2 = Await.result(FipRadio.currentTrack(), scala.concurrent.duration.Duration(1, "seconds"))
     }
   }
 }
