@@ -23,7 +23,6 @@ object Yo extends Controller {
         cs    <- FipRadio.currentTrack
         id    <- SpotifySearch.search(cs.interpreteMorceau, cs.titre)
       } yield {
-        println(cs.toString)
         Ok("yo " + id.toString)
       }
     }

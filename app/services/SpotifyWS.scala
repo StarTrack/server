@@ -2,13 +2,15 @@ package services.spotify
 
 import play.api._
 import java.net.URLEncoder
-import play.api.libs.json.{Json, JsValue}
+import play.api.libs.json._
 import play.api.libs.ws.WS
 
 import scala.concurrent._
 
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.Play.current
+
+import models._
 
 object Conf {
   val client_id = Play.configuration.getString("spotify.id").get
@@ -89,6 +91,14 @@ object SpotifyWS {
         case _ => Future.failed(new Exception("Spotify id is bad"))
       }
     }
+  }
+
+  def addToPlayList(user: User, playListId: String, trackId: String) = {
+    val headers = ("Authorization" -> s"Bearer ${user.accessToken}")
+
+     WS.url(s"https://api.spotify.com/v1/users/${user.login}/playlists/$playListId/tracks")
+       .withHeaders(headers)
+       .post( Json.toJson(Seq(trackId)) )
   }
 
 }
