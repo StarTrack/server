@@ -5,6 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index
 
+GET     /yo/:token                  controllers.Yo.yo(token: String, username: String)
+
 GET     /users/me                   controllers.Users.me
 POST    /users/me/:login            controllers.Users.login(login: String)
 
