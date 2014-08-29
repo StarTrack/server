@@ -19,8 +19,9 @@ object Users extends Controller with MongoController{
   def collection: JSONCollection = db.collection[JSONCollection]("users")
 
   val updateReads = (
-    (__ \ "yoAccount").read[Seq[String]]
-  )
+    (__ \ "yoAccount").read[Seq[String]] and
+    (__ \ "playlistId").readNullable[String]
+  ).tupled
 
   def me = Action.async { request =>
     request.session.get("login")
@@ -52,7 +53,8 @@ object Users extends Controller with MongoController{
   }
 
   def update(login: String) = Action.async(parse.json(updateReads)) { request =>
-    User.update(login, request.body)
+    val (yoAccounts, playlistId) = request.body
+    User.update(login, yoAccounts, playlistId)
         .map(lastError => Created("Mongo LastError: %s".format(lastError)) )
   }
 

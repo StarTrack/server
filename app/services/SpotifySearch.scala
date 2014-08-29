@@ -12,12 +12,13 @@ import scala.concurrent.Future
 object SpotifySearch {
   val url = "http://ws.spotify.com/search/1/track.json"
 
-
-  def search(artist: String, track: String): Future[Option[String]] = {
-    search2(artist, track).flatMap {
-      case a@Some(_) => Future.successful(a)
-      case None      => search(track)
-    }
+  def search(track: Track): Future[Option[String]] = {
+    track.interpreteMorceau.map { artist =>
+      search(artist, track.titre).flatMap {
+        case a@Some(_) => Future.successful(a)
+        case None      => search(track.titre)
+      }
+    }.getOrElse( Future.successful(None) )
   }
 
   def encode(str: String ) = URLEncoder.encode(str, "UTF8")
@@ -28,7 +29,7 @@ object SpotifySearch {
     }
   }
 
-  def search2(artist: String, track: String): Future[Option[String]] = {
+  def search(artist: String, track: String): Future[Option[String]] = {
     WS.url("%s?q=artist:%s+AND+track:%s".format(url, encode(artist), encode(track))).get().map { response =>
       response.json.\("tracks")(0).\("href").as[Option[String]]
     }

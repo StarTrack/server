@@ -18,12 +18,18 @@ object Yo extends Controller {
     if( yoToken != token ) {
       Future.successful(BadRequest("Invalid token"))
     } else {
-      for {
-        users <- User.find(yoAccount)
-        cs    <- FipRadio.currentTrack
-        id    <- SpotifySearch.search(cs.interpreteMorceau, cs.titre)
-      } yield {
-        Ok("yo " + id.toString)
+      val res = for {
+        users   <- User.find(yoAccount)
+        track   <- FipRadio.currentTrack
+        trackId <- SpotifySearch.search(track)
+      } yield (users, trackId)
+
+      res.flatMap {
+        case ( users, Some(trackId) ) =>
+          Future.sequence(users.map { user => SpotifyWS.addToPlayList(user, trackId) })
+                .map { _ => Ok("Yo") }
+
+        case ( users, None ) => Future.successful( Ok("Yo : can't find Track") )
       }
     }
   }

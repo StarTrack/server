@@ -1,4 +1,4 @@
-package services.spotify
+package services
 
 import play.api._
 import java.net.URLEncoder
@@ -124,10 +124,10 @@ object SpotifyWS {
     }
   }
 
-  def addToPlayList(user: User, playListId: String, trackId: String) = {
+  def addToPlayList(user: User, trackId: String) = {
     val headers = ("Authorization" -> s"Bearer ${user.accessToken}")
 
-     WS.url(s"https://api.spotify.com/v1/users/${user.login}/playlists/$playListId/tracks")
+     WS.url(s"https://api.spotify.com/v1/users/${user.login}/playlists/${user.playlistId}/tracks")
        .withHeaders(headers)
        .post( Json.toJson(Seq(trackId)) )
   }

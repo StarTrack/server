@@ -9,7 +9,7 @@ import scala.util.Random
 
 import scala.concurrent._
 
-import services.spotify._
+import services._
 import models._
 
 object Spotify extends Controller {
@@ -50,8 +50,7 @@ object Spotify extends Controller {
         val user = User(
           spotifyUser.id,
           tokens.access_token,
-          tokens.refresh_token,
-          Seq.empty
+          tokens.refresh_token
         )
 
         User.create(user)

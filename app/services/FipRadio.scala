@@ -14,15 +14,11 @@ object Visuel {
   implicit val reader = Json.reads[Visuel]
 }
 
-case class Track(
-                  startTime: Long,
+case class Track( startTime: Long,
                   endTime: Long,
                   titre: String,
-                  titreAlbum: String,
-                  interpreteMorceau: String,
-                  anneeEditionMusique: Option[String], //missing sometimes
-                  visuel: Visuel,
-                  lien: String) {
+                  interpreteMorceau: Option[String] ) {
+
   def start: DateTime = new DateTime(startTime)
 
   def end: DateTime = new DateTime(endTime)

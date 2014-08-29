@@ -10,7 +10,13 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class User(login: String, accessToken: String, refreshToken: String, yoAccounts: Seq[String]) {
+case class User(
+  login: String,
+  accessToken: String,
+  refreshToken: String,
+  yoAccounts: Seq[String] = Nil,
+  playlistId: Option[String] = None
+) {
 
   def toJson = Json.obj(
     "login"      -> login,
@@ -35,11 +41,12 @@ object User {
       )
     )
 
-  def update(login: String, yoAccounts: Seq[String]): Future[LastError] =
+  def update(login: String, yoAccounts: Seq[String], playlistId: Option[String]): Future[LastError] =
     collection.update(
       selector = Json.obj("login" -> login),
       update   = Json.obj(
-        "yoAccounts"  -> yoAccounts
+        "yoAccounts"  -> yoAccounts,
+        "playlistId"  -> playlistId
       )
     )
 
