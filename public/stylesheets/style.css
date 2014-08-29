@@ -1,0 +1,270 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+	color: #FFF;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+*{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+body, html {
+	font-family: 'Montserrat', sans-serif;
+	width: 100%;
+	background: #9B59B6;
+
+}
+
+header {
+	background-color: #F0C700;
+	width: 100%;
+	height: 100%;
+	padding: 1px;
+	text-align: center;
+	cursor: pointer;
+}
+
+header h1 {
+	font-size: 60px;
+	font-weight: bold;
+	padding: 10px;
+}
+
+header h2 {
+	background-color: #E83F42;
+	border-radius:100px;
+	text-align: center;
+	font-size: 30px;
+	height: 60px;
+	width:60px;
+	padding: 15px;
+	position: absolute;
+	top:10px;
+	right: 10px;
+}
+
+header div.info {
+	background-color: #E83F42;
+	border-radius:100px;
+	text-align: center;
+	float: right;
+	font-size: 30px;
+	height: 60px;
+	width:60px;
+	padding: 15px;
+}
+
+header h2:hover {
+	cursor: pointer;
+}
+
+input {
+	background-color: #E83F42;
+	border: 0px;
+	width: 200px;
+	height: 100%;
+}
+
+.yoers {
+	text-align: center;
+	height: 100%;
+	width: 100%;
+	color: #FFF;
+	font-size: 32px;
+	background: #9B59B6;
+	-webkit-background-size: cover; 
+	-moz-background-size: cover; 
+	-o-background-size: cover; 
+	background-size: cover;
+}
+
+.yoers .yoer10{
+	font-weight: bold;
+	background: #09997D;
+	width: 100%;
+	padding: 20px;
+}
+
+.yoers .yoer9 {
+	font-weight: bold;
+	background: #34485F;
+	width: 95%;
+	padding: 20px;
+	text-align: center;
+	margin: 0 auto 0 auto;
+
+}
+
+.yoers .yoer8 {
+	font-weight: bold;
+	background: #F0C700;
+	width: 90%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+
+.yoers .yoer7 {
+	font-weight: bold;
+	background: #2B83B6;
+	width: 85%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+
+.yoers .yoer6 {
+	font-weight: bold;
+	background: #55B496;
+	width: 80%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+.yoers .yoer5 {
+	font-weight: bold;
+	background: #2B83B6;
+	width: 75%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+.yoers .yoer4 {
+	font-weight: bold;
+	background: #33495C;
+	width: 70%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+.yoers .yoer3 {
+	font-weight: bold;
+	background: #55B496;
+	width: 65%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+.yoers .yoer2 {
+	font-weight: bold;
+	background: #2B83B6;
+	width: 60%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+.yoers .yoer1 {
+	font-weight: bold;
+	background: #F0C700;
+	width: 55%;
+	padding: 20px;
+	margin: 0 auto 0 auto;
+}
+
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 0.5s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+.pop {
+	display: none;
+	color: white;
+	position: absolute;
+	top:0px;
+	padding: 100px;
+	background: rgba(0, 0, 0, 0.8);
+	height: 100%;
+	width: 100%;
+}
+
+.pop.visible{
+	display: block;
+}
+
+.cross {
+	background-color: #E83F42;
+	border-radius:100px;
+	text-align: center;
+	font-size: 30px;
+	height: 60px;
+	width:60px;
+	padding: 15px;
+	position: absolute;
+	top:10px;
+	right: 10px;
+	color:white;
+	cursor: pointer;
+}
+
+.video {
+	position: center;
+}
