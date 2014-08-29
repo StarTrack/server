@@ -14,7 +14,7 @@ var Cockpit = React.createClass({
       <section className="section green">
         <div class="container">
           <p>IF
-            <input autofocus className="yoUser" type="text" placeholder="Yo username" onKeyUp={debouncedSend} value={this.props.user.yoAccounts || ""}/>
+            <input autofocus className="yoUser" type="text" placeholder="Yo username" onKeyUp={debouncedSend} defaultValue={this.props.user.yoAccounts || ""}/>
             Yoes FIP <br/>
             then save the current track <br/>to this playlist&nbsp;
             <select className="playlist" onChange={this.sendYoers}>
@@ -26,7 +26,7 @@ var Cockpit = React.createClass({
     </div>
 
     /**
-     
+
     <section className="section history">
       <div className="container">
         <h2>STARRED TRACKS HISTORY</h2>
