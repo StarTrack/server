@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/startracks -Dhttp.port=$PORT -Dmongodb.uri=$MONGOHQ_URL -Dconfig.resource=prod.conf

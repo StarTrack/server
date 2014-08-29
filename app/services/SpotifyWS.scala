@@ -15,7 +15,7 @@ import models._
 object Conf {
   val client_id = Play.configuration.getString("spotify.id").get
   val client_secret = Play.configuration.getString("spotify.secret").get
-  val redirect_uri = "http://localhost:9000/callback";
+  val redirect_uri = Play.configuration.getString("spotify.redirect_url").get
   val spotify_authorize = "https://accounts.spotify.com/authorize"
   val spotify_token = "https://accounts.spotify.com/api/token"
 
