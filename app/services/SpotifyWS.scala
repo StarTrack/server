@@ -33,7 +33,7 @@ object SpotifyUser {
 
 object SpotifyWS {
   def userAuthUrl(security_token: String): String = {
-    val scope = "user-read-private user-read-email playlist-modify-private playlist-modify-public"
+    val scope = "user-read-private user-read-email playlist-modify-private playlist-modify-public playlist-read-private"
 
     Conf.spotify_authorize + "?" + Utils.encodeUrlParams(
       Map(
@@ -44,20 +44,6 @@ object SpotifyWS {
         "state" -> security_token
       )
     )
-  }
-
-  def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
-    val headers = ("Authorization" -> s"Bearer $access_token")
-
-    WS.url("https://api.spotify.com/v1/me").withHeaders(headers).get().flatMap { response =>
-      response.status match {
-        case 200 => {
-          val parsed = Json.parse(response.body)
-          Future.successful(parsed.as[SpotifyUser])
-        }
-        case _ => Future.failed(new Exception("Spotify id is bad"))
-      }
-    }
   }
 
   def getTokens(code: String): Future[Tokens] = {
@@ -89,6 +75,22 @@ object SpotifyWS {
       }
     }
   }
+
+
+  def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
+    val headers = ("Authorization" -> s"Bearer $access_token")
+
+    WS.url("https://api.spotify.com/v1/me").withHeaders(headers).get().flatMap { response =>
+      response.status match {
+        case 200 => {
+          val parsed = Json.parse(response.body)
+          Future.successful(parsed.as[SpotifyUser])
+        }
+        case _ => Future.failed(new Exception("Spotify id is bad"))
+      }
+    }
+  }
+
 }
 
 object Utils {
