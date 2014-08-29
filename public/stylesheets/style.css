@@ -61,6 +61,15 @@ body, html {
 
 }
 
+.wrapper {
+	background-color: #2B83B6;
+	width: 100%;
+	height: 100%;
+	padding: 1px;
+	text-align: center;
+	cursor: pointer;
+}
+
 header {
 	background-color: #2B83B6;
 	width: 100%;
@@ -115,6 +124,21 @@ input {
 }
 
 input:focus {
+    background-color: #F0C700;
+   	color: #FFF;
+} 
+
+select {
+	background-color: #E83F42;
+	border: 0px;
+	width: 250px;
+	height: 100%;
+	padding: 20px;
+	font-size: 32px;
+	color: #FFF;
+}
+
+select:focus {
     background-color: #F0C700;
    	color: #FFF;
 } 
