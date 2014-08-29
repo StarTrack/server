@@ -10,7 +10,7 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class User(login: String, refreshToken: String, yoAccounts: Seq[String])
+case class User(login: String, accessToken: String, refreshToken: String, yoAccounts: Seq[String])
 
 object User {
   implicit val userRead  = Json.reads[User]
