@@ -1,5 +1,6 @@
 package services.spotify
 
+import play.api._
 import java.net.URLEncoder
 import play.api.libs.json.{Json, JsValue}
 import play.api.libs.ws.WS
@@ -10,8 +11,8 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.Play.current
 
 object Conf {
-  val client_id = "b49ca56baba34a0f885bc137b9cba887";
-  val client_secret = "dbf9641a44ce4b7b90063e8cb6a61422";
+  val client_id = Play.configuration.getString("spotify.id").get
+  val client_secret = Play.configuration.getString("spotify.secret").get
   val redirect_uri = "http://localhost:9000/callback";
   val spotify_authorize = "https://accounts.spotify.com/authorize"
   val spotify_token = "https://accounts.spotify.com/api/token"
