@@ -96,6 +96,7 @@ object SpotifyWS {
     val headers = ("Authorization" -> s"Bearer $access_token")
 
     WS.url(url).withHeaders(headers)
+               .withHeaders("Content-Type" -> "application/json")
   }
 
   def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
@@ -125,11 +126,19 @@ object SpotifyWS {
     }
   }
 
-  def addToPlayList(user: User, trackId: String) = {
-    val url = Conf.add_track_endpoint.format(user.login, user.playlistId)
+  def addToPlayList(user: User, trackId: String): Future[_] = {
+    user.playlistId.map { playlistId =>
+      play.Logger.debug("Add to playList : %s - %s - %s".format(user.login, playlistId, trackId) )
+      val url = Conf.add_track_endpoint.format(user.login, playlistId)
 
-    wsWithAuth(url, user.accessToken).post( Json.toJson(Seq(trackId)) )
+      wsWithAuth(url, user.accessToken)
+        .post( Json.toJson(Seq(trackId)) )
+        .map { response =>
+          play.Logger.debug(response.status.toString + " - " + response.body)
+        }
+    }.getOrElse( Future.successful("No playList") )
   }
+
 
 }
 
