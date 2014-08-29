@@ -60,15 +60,16 @@ object FipRadio {
 
   private def getPlayerCurrent: Future[FipPlayer] = {
     WS.url(apiURL).get().map { response =>
-      val currentTrack = response.json.\("current").\("song").as[Track]
-      val p1Track = response.json.\("previous1").\("song").as[Track]
-      val p2Track = response.json.\("previous2").\("song").as[Track]
-      val n1Track = response.json.\("next1").\("song").as[Track]
-      val n2Track = response.json.\("next2").\("song").as[Track]
+      val json = response.json
+      val currentTrack = json.\("current").\("song").as[Track]
+      val p1Track = json.\("previous1").\("song").as[Track]
+      val p2Track = json.\("previous2").\("song").as[Track]
+      val n1Track = json.\("next1").\("song").as[Track]
+      val n2Track = json.\("next2").\("song").as[Track]
 
       val p = FipPlayer(currentTrack, p1Track, p2Track, n1Track, n2Track)
 
-      println(p)
+      //println(p)
       cachedResponse = Some(p)
       p
     }

@@ -26,6 +26,15 @@ object User {
 
   def create(user: User): Future[LastError] = collection.insert(Json.toJson(user))
 
+  def update(login: String, accessToken: String, refreshToken: String): Future[LastError] =
+    collection.update(
+      selector = Json.obj("login" -> login),
+      update   = Json.obj(
+        "accessToken"  -> accessToken,
+        "refreshToken" -> refreshToken
+      )
+    )
+
   def update(login: String, yoAccounts: Seq[String]): Future[LastError] =
     collection.update(
       selector = Json.obj("login" -> login),

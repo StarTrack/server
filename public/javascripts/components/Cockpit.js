@@ -7,6 +7,15 @@ var Cockpit = React.createClass({
       };
   },
   render:function(){
-    return <h1>Star track</h1>;
+    return <section className="yoers">
+	<div className="yoer10">IF 
+	<input type="text" placeholder="Yo username"/>
+	 Yoes FIP 
+         then save to playlist&nbsp;
+         <span className="playlist">Toto</span>
+	</div>
+    </section>;
+  },
+  sendYoers: function(){ 
   }
 });
