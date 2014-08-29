@@ -21,6 +21,7 @@ object Conf {
 
   val user_info_endpoint = "https://api.spotify.com/v1/me"
   val playlists_endpoint = "https://api.spotify.com/v1/users/%s/playlists"
+  val add_track_endpoint = "https://api.spotify.com/v1/users/%s/playlists/%s/tracks"
 }
 
 case class Tokens(
@@ -125,11 +126,9 @@ object SpotifyWS {
   }
 
   def addToPlayList(user: User, trackId: String) = {
-    val headers = ("Authorization" -> s"Bearer ${user.accessToken}")
+    val url = Conf.add_track_endpoint.format(user.login, user.playlistId)
 
-     WS.url(s"https://api.spotify.com/v1/users/${user.login}/playlists/${user.playlistId}/tracks")
-       .withHeaders(headers)
-       .post( Json.toJson(Seq(trackId)) )
+    wsWithAuth(url, user.accessToken).post( Json.toJson(Seq(trackId)) )
   }
 
 }
