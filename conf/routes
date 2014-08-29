@@ -5,5 +5,9 @@
 # Home page
 GET     /                           controllers.Application.index
 
+POST    /users                      controllers.Users.create
+GET     /users/:yoAccount           controllers.Users.find(yoAccount: String)
+DELETE  /users/:login               controllers.Users.delete(login: String)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

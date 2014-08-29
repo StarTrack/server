@@ -22,10 +22,18 @@ object Users extends Controller with MongoController{
   }
 
   def create = Action.async(parse.json[User]) { request =>
-    val json = Json.toJson(request.body)
+    User.create(request.body)
+        .map(lastError => Created("Mongo LastError: %s".format(lastError)) )
+  }
 
-    collection.insert(json).map(lastError =>
-      Ok("Mongo LastError: %s".format(lastError)))
+  def find(yoAccount: String) = Action.async {
+    User.find(yoAccount)
+        .map { accounts => Ok(Json.toJson(accounts)) }
+  }
+
+  def delete(login: String) = Action.async {
+    User.delete(login)
+        .map(lastError => Ok("Mongo LastError: %s".format(lastError)) )
   }
 
 }
