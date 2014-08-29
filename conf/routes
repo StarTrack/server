@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index
 
 POST    /users                      controllers.Users.create
+PUT     /users/:login               controllers.Users.update(login: String)
 GET     /users/:yoAccount           controllers.Users.find(yoAccount: String)
 DELETE  /users/:login               controllers.Users.delete(login: String)
 

@@ -20,6 +20,14 @@ object User {
 
   def create(user: User): Future[LastError] = collection.insert(Json.toJson(user))
 
+  def update(login: String, yoAccounts: Seq[String]): Future[LastError] =
+    collection.update(
+      selector = Json.obj("login" -> login),
+      update   = Json.obj(
+        "yoAccounts"  -> yoAccounts
+      )
+    )
+
   def get(login: String): Future[Option[User]] =
     collection.find(Json.obj("login" -> login))
               .cursor[User]
