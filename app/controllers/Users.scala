@@ -55,7 +55,7 @@ object Users extends Controller with MongoController{
   def update(login: String) = Action.async(parse.json(updateReads)) { request =>
     val (yoAccounts, playlistId) = request.body
     User.update(login, yoAccounts, playlistId)
-        .map(lastError => Created("Mongo LastError: %s".format(lastError)) )
+        .map(lastError => Ok("Mongo LastError: %s".format(lastError)) )
   }
 
   def find(yoAccount: String) = Action.async {
