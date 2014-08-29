@@ -10,6 +10,7 @@ import scala.util.Random
 import scala.concurrent._
 
 import services.spotify._
+import models._
 
 object Spotify extends Controller {
 
@@ -27,8 +28,12 @@ object Spotify extends Controller {
     println("state: " + state)
     val tokens: Future[Tokens] = SpotifyWS.getTokens(code)
     tokens.flatMap { tokens =>
-      SpotifyWS.getSpotifyUser(tokens.access_token).map { user =>
-        Ok("userId: " + user.id)
+      SpotifyWS.getSpotifyUser(tokens.access_token).flatMap { spotifyUser =>
+        authenticationSuccess(tokens, spotifyUser).map { user =>
+          Redirect("/").withSession(
+            "login" -> user.login
+          )
+        }
       }
     } recover {
       case msg: Exception => BadRequest(msg.toString)
@@ -36,8 +41,24 @@ object Spotify extends Controller {
 
   }
 
-  def authenticationSuccess() = {
+  private def authenticationSuccess(tokens: Tokens, spotifyUser: SpotifyUser): Future[User] = {
+    User.get(spotifyUser.id).map {
+      case Some(user) =>
+        User.update(user.login, tokens.access_token, tokens.refresh_token)
+        user
 
+      case None => {
+        val user = User(
+          spotifyUser.id,
+          tokens.access_token,
+          tokens.refresh_token,
+          Seq.empty
+        )
+
+        User.create(user)
+        user
+      }
+    }
   }
 
 }

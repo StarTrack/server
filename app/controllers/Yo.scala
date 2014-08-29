@@ -8,6 +8,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import models._
+import services._
 
 object Yo extends Controller {
 
@@ -19,8 +20,10 @@ object Yo extends Controller {
     } else {
       for {
         users <- User.find(yoAccount)
+        cs    <- FipRadio.currentTrack
+        id    <- SpotifySearch.search(cs.interpreteMorceau, cs.titre)
       } yield {
-        Ok("yo")
+        Ok("yo " + id.toString)
       }
     }
   }

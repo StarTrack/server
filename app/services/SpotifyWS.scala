@@ -1,7 +1,8 @@
 package services.spotify
 
+import play.api._
 import java.net.URLEncoder
-import play.api.libs.json.{Json, JsValue}
+import play.api.libs.json._
 import play.api.libs.ws.WS
 
 import scala.concurrent._
@@ -9,9 +10,11 @@ import scala.concurrent._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.Play.current
 
+import models._
+
 object Conf {
-  val client_id = "b49ca56baba34a0f885bc137b9cba887";
-  val client_secret = "dbf9641a44ce4b7b90063e8cb6a61422";
+  val client_id = Play.configuration.getString("spotify.id").get
+  val client_secret = Play.configuration.getString("spotify.secret").get
   val redirect_uri = "http://localhost:9000/callback";
   val spotify_authorize = "https://accounts.spotify.com/authorize"
   val spotify_token = "https://accounts.spotify.com/api/token"
@@ -32,7 +35,7 @@ object SpotifyUser {
 
 object SpotifyWS {
   def userAuthUrl(security_token: String): String = {
-    val scope = "user-read-private user-read-email playlist-modify-private playlist-modify-public"
+    val scope = "user-read-private user-read-email playlist-modify-private playlist-modify-public playlist-read-private"
 
     Conf.spotify_authorize + "?" + Utils.encodeUrlParams(
       Map(
@@ -43,20 +46,6 @@ object SpotifyWS {
         "state" -> security_token
       )
     )
-  }
-
-  def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
-    val headers = ("Authorization" -> s"Bearer $access_token")
-
-    WS.url("https://api.spotify.com/v1/me").withHeaders(headers).get().flatMap { response =>
-      response.status match {
-        case 200 => {
-          val parsed = Json.parse(response.body)
-          Future.successful(parsed.as[SpotifyUser])
-        }
-        case _ => Future.failed(new Exception("Spotify id is bad"))
-      }
-    }
   }
 
   def getTokens(code: String): Future[Tokens] = {
@@ -88,6 +77,30 @@ object SpotifyWS {
       }
     }
   }
+
+
+  def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
+    val headers = ("Authorization" -> s"Bearer $access_token")
+
+    WS.url("https://api.spotify.com/v1/me").withHeaders(headers).get().flatMap { response =>
+      response.status match {
+        case 200 => {
+          val parsed = Json.parse(response.body)
+          Future.successful(parsed.as[SpotifyUser])
+        }
+        case _ => Future.failed(new Exception("Spotify id is bad"))
+      }
+    }
+  }
+
+  def addToPlayList(user: User, playListId: String, trackId: String) = {
+    val headers = ("Authorization" -> s"Bearer ${user.accessToken}")
+
+     WS.url(s"https://api.spotify.com/v1/users/${user.login}/playlists/$playListId/tracks")
+       .withHeaders(headers)
+       .post( Json.toJson(Seq(trackId)) )
+  }
+
 }
 
 object Utils {
