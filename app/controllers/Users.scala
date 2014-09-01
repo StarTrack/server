@@ -28,6 +28,10 @@ object Users extends Controller with MongoController{
             .map { login => User.get(login) }
             .getOrElse(Future.successful(None))
             .flatMap {
+              case Some(user) =>
+                User.refreshAccessToken(user).map(Some(_))
+            }
+            .flatMap {
 
               case Some(user) => {
                 val playlists = SpotifyWS.playlists(user.login, user.accessToken)
@@ -41,10 +45,6 @@ object Users extends Controller with MongoController{
 
               case _          => Future.successful(Forbidden("You shall login"))
             }
-  }
-
-  def login(login: String) = Action {
-    Ok("Connected").withSession("login" -> login)
   }
 
   def create = Action.async(parse.json[User]) { request =>

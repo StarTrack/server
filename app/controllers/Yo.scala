@@ -20,7 +20,7 @@ object Yo extends Controller {
       Future.successful(BadRequest("Invalid token"))
     } else {
       val res = for {
-        users   <- User.find(yoAccount)
+        users   <- User.find(yoAccount).flatMap( users => Future.sequence(users.map(User.refreshAccessToken(_))) )
         track   <- FipRadio.currentTrack
         trackId <- SpotifySearch.search(track)
       } yield (users, trackId)

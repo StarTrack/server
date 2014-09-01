@@ -1,7 +1,6 @@
 package services
 
 import play.api._
-import java.net.URLEncoder
 import play.api.libs.json._
 import play.api.libs.ws.WS
 
@@ -11,25 +10,24 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.Play.current
 
 import models._
+import utils.Encoding
 
 object Conf {
-  val client_id = Play.configuration.getString("spotify.id").get
+  val client_id =     Play.configuration.getString("spotify.id").get
   val client_secret = Play.configuration.getString("spotify.secret").get
-  val redirect_uri = Play.configuration.getString("spotify.redirect_url").get
-  val spotify_authorize = "https://accounts.spotify.com/authorize"
-  val spotify_token = "https://accounts.spotify.com/api/token"
-
-  val user_info_endpoint = "https://api.spotify.com/v1/me"
-  val playlists_endpoint = "https://api.spotify.com/v1/users/%s/playlists"
-  val add_track_endpoint = "https://api.spotify.com/v1/users/%s/playlists/%s/tracks"
-
-  val track_info_endpoint = "https://api.spotify.com/v1/tracks/%s"
+  val redirect_uri =  Play.configuration.getString("spotify.redirect_url").get
 }
 
-case class Tokens(
-  access_token: String,
-  refresh_token: String
-)
+object Endpoints {
+  val authorize =  "https://accounts.spotify.com/authorize"
+  val token =      "https://accounts.spotify.com/api/token"
+
+  val user_info =  "https://api.spotify.com/v1/me"
+  val playlists =  "https://api.spotify.com/v1/users/%s/playlists"
+  val add_track =  "https://api.spotify.com/v1/users/%s/playlists/%s/tracks"
+
+  val track_info = "https://api.spotify.com/v1/tracks/%s"
+}
 
 case class SpotifyUser(
   id: String,
@@ -50,80 +48,38 @@ object Playlist {
 }
 
 object SpotifyWS {
-  def userAuthUrl(security_token: String): String = {
-    val scope = "user-read-private user-read-email playlist-modify-private playlist-modify-public playlist-read-private"
 
-    Conf.spotify_authorize + "?" + Utils.encodeUrlParams(
-      Map(
-        "response_type" -> "code",
-        "client_id" -> Conf.client_id,
-        "scope" -> scope,
-        "redirect_uri" -> Conf.redirect_uri,
-        "state" -> security_token
-      )
-    )
-  }
 
-  def getTokens(code: String): Future[Tokens] = {
-    getTokensJson(code).flatMap { json =>
-      ( (json \ "access_token").asOpt[String], (json \ "refresh_token").asOpt[String] ) match {
-
-        case (Some(access_token), Some(refresh_token)) =>
-          Future.successful( Tokens(access_token, refresh_token) )
-
-        case _ =>
-          Future.failed( new Exception("Cannot find access_token") )
-      }
-    }
-  }
-
-  def getTokensJson(code: String): Future[JsValue] = {
-    WS.url(Conf.spotify_token).post(
-      Map(
-        "code" -> Seq(code),
-        "redirect_uri" -> Seq(Conf.redirect_uri),
-        "grant_type" -> Seq("authorization_code"),
-        "client_id" -> Seq(Conf.client_id),
-        "client_secret" -> Seq(Conf.client_secret)
-      )
-    ).flatMap { response =>
-      response.status match {
-        case 200 => Future.successful(Json.parse(response.body) )
-        case otherCode => Future.failed(new Exception("Http code: %d Response: %s".format(otherCode, response.body)))
-      }
-    }
-  }
-
-  private def wsWithAuth(url: String, access_token: String) = {
-    val headers = ("Authorization" -> s"Bearer $access_token")
+  private def wsWithAuth(url: String, accessToken: String) = {
+    val headers = ("Authorization" -> s"Bearer $accessToken")
 
     WS.url(url).withHeaders(headers)
                .withHeaders("Content-Type" -> "application/json")
   }
 
-  def getSpotifyUser(access_token: String): Future[SpotifyUser] = {
-    val url = Conf.user_info_endpoint
+  def getSpotifyUser(accessToken: String): Future[SpotifyUser] = {
+    val url = Endpoints.user_info
 
-    wsWithAuth(url, access_token).get.flatMap { response =>
+    wsWithAuth(url, accessToken).get.flatMap { response =>
       response.status match {
         case 200 => {
           val parsed = Json.parse(response.body)
           Future.successful(parsed.as[SpotifyUser])
         }
-        case _ => Future.failed(new Exception("Spotify user id bad status"))
+        case err => Future.failed(new Exception("Spotify user id bad status: $err body: $response.body"))
       }
     }
   }
 
-  def playlists(login: String, access_token: String): Future[Seq[Playlist]] = {
-    val url = Conf.playlists_endpoint.format( login )
+  def playlists(login: String, accessToken: String): Future[Seq[Playlist]] = {
+    val url = Endpoints.playlists.format( login )
 
-    wsWithAuth(url, access_token).get.flatMap { response =>
+    wsWithAuth(url, accessToken).get.flatMap { response =>
       response.status match {
         case 200 =>
           val parsed = Json.parse(response.body)
           Future.successful( (parsed \ "items").as[Seq[Playlist]] )
-        case _ => Future.failed(new Exception("Spotify playlists bad status"))
+        case err => Future.failed(new Exception("Spotify playlists bad status: $err body: $response.body"))
       }
     }
   }
@@ -131,12 +87,16 @@ object SpotifyWS {
   def addToPlayList(user: User, trackId: String): Future[_] = {
     user.playlistId.map { playlistId =>
       play.Logger.debug("Add to playList : %s - %s - %s".format(user.login, playlistId, trackId) )
-      val url = Conf.add_track_endpoint.format(user.login, playlistId)
+      val url = Endpoints.add_track.format(user.login, playlistId)
 
       wsWithAuth(url, user.accessToken)
         .post( Json.toJson(Seq(trackId)) )
         .map { response =>
-          play.Logger.debug(response.status.toString + " - " + response.body)
+          response.status match {
+            case 201 => play.Logger.debug("Track was succesufly added to the playlist")
+            case err => play.Logger.error("Error while added the track to the playlist: " + response.status.toString + " - " + response.body)
+          }
+
         }
     }.getOrElse( Future.successful("No playList") )
   }
@@ -144,18 +104,9 @@ object SpotifyWS {
   def trackInfos(trackId: String): Future[JsValue] = {
     val cleanId = trackId.replace("spotify:track:", "")
 
-    WS.url(Conf.track_info_endpoint.format(cleanId))
+    WS.url(Endpoints.track_info.format(cleanId))
       .get
       .map( _.json )
   }
 
-}
-
-object Utils {
-  def encodeUrlParams(params: Map[String,String]): String = {
-   params.map {
-     case (k, v) =>
-       URLEncoder.encode(k,"utf-8") + "=" + URLEncoder.encode(v, "utf-8")
-   }.mkString("&")
-  }
 }

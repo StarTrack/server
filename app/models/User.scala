@@ -10,6 +10,8 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import services.SpotifyAuth
+
 case class User(
   login: String,
   accessToken: String,
@@ -67,5 +69,13 @@ object User {
 
   def delete(login: String): Future[LastError] =
     collection.remove( Json.obj("login" -> login) )
+
+  def refreshAccessToken(user: User): Future[User] = {
+    SpotifyAuth.refreshAccessToken(user.refreshToken).flatMap { newAccessToken =>
+      update(user.login, newAccessToken, user.refreshToken).map { lastErr =>
+        user.copy(accessToken = newAccessToken)
+      }
+    }
+  }
 
 }
