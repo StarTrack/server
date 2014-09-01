@@ -12,7 +12,7 @@ import scala.concurrent._
 import services._
 import models._
 
-object Spotify extends Controller {
+object Auth extends Controller {
 
   val state_session_name = "user_state"
 

@@ -22,5 +22,5 @@ DELETE  /users/:login               controllers.Users.delete(login: String)
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Spotify auth
-GET     /auth                       controllers.Spotify.auth
-GET     /callback                   controllers.Spotify.callback(code: String, state: String)
+GET     /auth                       controllers.Auth.auth
+GET     /callback                   controllers.Auth.callback(code: String, state: String)
