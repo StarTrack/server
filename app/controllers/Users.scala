@@ -24,27 +24,21 @@ object Users extends Controller with MongoController{
   ).tupled
 
   def me = Action.async { request =>
-    request.session.get("login")
-            .map { login => User.get(login) }
-            .getOrElse(Future.successful(None))
-            .flatMap {
-              case Some(user) =>
-                User.refreshAccessToken(user).map(Some(_))
-            }
-            .flatMap {
+    request.session.get("login").map { login =>
+      (for {
+        user <- User.getWithException(login)
+        refreshedUser <- User.refreshAccessToken(user)
+        playlists <- SpotifyWS.playlists(user.login, user.accessToken)
+      } yield {
+        Ok(
+          user.toJson ++ Json.obj( "playlists" -> Json.toJson(playlists) )
+        )
+      })
+      .recover {
+        case exception => Forbidden("You shall login (nf)")
+      }
+    }.getOrElse(Future.successful(Forbidden("You shall login (cookies)")))
 
-              case Some(user) => {
-                val playlists = SpotifyWS.playlists(user.login, user.accessToken)
-                playlists.map { pls =>
-                  Ok(
-                    user.toJson ++ Json.obj( "playlists" -> Json.toJson(pls) )
-                  )
-                }
-
-              }
-
-              case _          => Future.successful(Forbidden("You shall login"))
-            }
   }
 
   def create = Action.async(parse.json[User]) { request =>

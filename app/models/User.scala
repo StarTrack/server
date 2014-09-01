@@ -62,6 +62,12 @@ object User {
               .collect[Seq](1)
               .map(_.headOption)
 
+  def getWithException(login: String): Future[User] =
+    get(login).flatMap {
+      case Some(user) => Future.successful(user)
+      case None => Future.failed(new Exception("No user found"))
+    }
+
   def find(yoAccount: String): Future[Seq[User]] =
     collection.find(Json.obj("yoAccounts" -> yoAccount))
               .cursor[User]
