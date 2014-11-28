@@ -33,11 +33,11 @@ object User {
 
   def collection: JSONCollection = ReactiveMongoPlugin.db.collection[JSONCollection]("users")
 
-  def create(user: User): Future[LastError] = collection.insert(Json.toJson(user.copy(login = user.login.toUpperCase)))
+  def create(user: User): Future[LastError] = collection.insert(Json.toJson(user.copy(login = user.login)))
 
   def update(login: String, accessToken: String, refreshToken: String): Future[LastError] =
     collection.update(
-      selector = Json.obj("login" -> login.toUpperCase),
+      selector = Json.obj("login" -> login),
       update   = Json.obj( "$set" -> Json.obj(
         "accessToken"  -> accessToken,
         "refreshToken" -> refreshToken
