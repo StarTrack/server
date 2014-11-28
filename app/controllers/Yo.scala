@@ -56,7 +56,7 @@ object Yo extends Controller {
   }
 
   def redirectImage(id: String, slug: String) = Action {
-    Redirect(s"https://i.scdn.co/image/$id")
+    Ok(views.html.spotify_image(slug, id))
   }
 
 }
