@@ -15,26 +15,6 @@ object Yo extends Controller {
 
   val yoToken = Play.configuration.getString("yo.token").getOrElse("")
 
-  def yo(token: String, yoAccount: String) = Action.async {
-    if( yoToken != token ) {
-      Future.successful(BadRequest("Invalid token"))
-    } else {
-      val res = for {
-        users   <- User.find(yoAccount).flatMap( users => Future.sequence(users.map(User.refreshAccessToken(_))) )
-        track   <- FipRadio.currentTrack
-        trackId <- SpotifySearch.search(track)
-      } yield (users, trackId)
-
-      res.flatMap {
-        case ( users, Some(trackId) ) =>
-          Future.sequence(users.map { user => SpotifyWS.addToPlayList(user, trackId) })
-                .map { _ => Ok("Yo") }
-
-        case ( users, None ) => Future.successful( Ok("Yo : can't find Track") )
-      }
-    }
-  }
-
   def radio(token: String, radioName: String, yoAccount: String) = Action.async {
     if (yoToken != token) {
       Future.successful(BadRequest("Invalid token"))
