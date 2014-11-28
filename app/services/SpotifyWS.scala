@@ -80,7 +80,7 @@ object SpotifyWS {
         case 200 =>
           val parsed = Json.parse(response.body)
           Future.successful( (parsed \ "items").as[Seq[Playlist]] )
-        case err => Future.failed(new Exception("Spotify playlists bad status: $err body: $response.body"))
+        case err => Future.failed(new Exception(s"Spotify playlists bad status: $err body: " + response.body.toString))
       }
     }
   }

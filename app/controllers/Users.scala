@@ -35,7 +35,10 @@ object Users extends Controller with MongoController{
         )
       })
       .recover {
-        case exception => Forbidden("You shall login (nf)")
+        case exception => {
+          Logger.error(s"Exception $exception")
+          Forbidden("You shall login (nf)")
+        }
       }
     }.getOrElse(Future.successful(Forbidden("You shall login (cookies)")))
 
