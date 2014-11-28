@@ -1,18 +1,21 @@
-@(title: String, id: String)
-<!DOCTYPE html>
+@(id: String, title: String)<!DOCTYPE html>
 <html>
 <header>
   <title>@title</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-</header>
   <style type="text/css">
-    img {
-      border: 0;
-      padding: 0;
-      margin: 0;
-    }
-  </style>
+      img {
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+</header>
 <body>
-  <img src="https://i.scdn.co/image/@id"></img>
+  <img src="https://i.scdn.co/image/@id"/>
 </body>
 </html>

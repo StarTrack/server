@@ -10,6 +10,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import models._
 import services._
+import utils.Http
+
+
 
 object Yo extends Controller {
 
@@ -35,7 +38,13 @@ object Yo extends Controller {
           SpotifyWS.trackInfos(trackId).flatMap { jsTrackInfos =>
 
             val coverUrl = ((jsTrackInfos \ "album" \ "images").as[JsArray].value(0) \ "url").as[String]
-            var coverWithName = "https://radyo.herokuapp.com/spoimage/" + coverUrl.split("/").last + "/" + track.titre + " - " + track.interpreteMorceau.getOrElse("")
+            val titleUrlParam =
+              Http.encodeUrlParams(
+                Map(
+                  "title" -> (track.titre + " - " + track.interpreteMorceau.getOrElse(""))
+                )
+              )
+            val coverWithName = "https://radyo.herokuapp.com/spoimage/" + coverUrl.split("/").last + "?" + titleUrlParam
 
             Logger.debug(s"found trackId $trackId for users $users on radio $radioName")
             Future.sequence(
@@ -55,8 +64,8 @@ object Yo extends Controller {
     }
   }
 
-  def redirectImage(id: String, slug: String) = Action {
-    Ok(views.html.spotify_image(slug, id))
+  def redirectImage(id: String, title: String) = Action {
+    Ok(views.html.spotify_image(id, title))
   }
 
 }
