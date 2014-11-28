@@ -20,15 +20,16 @@ object YoWS {
     }
   }
 
-  def yoForRadio(reciever: String, radioName: String): Future[_] = {
-    yo(reciever, tokenForRadio(radioName))
+  def yoForRadio(reciever: String, radioName: String, link: String): Future[_] = {
+    yo(reciever, tokenForRadio(radioName), link)
   }
 
-  private def yo(reciever: String, token: String) = {
+  private def yo(reciever: String, token: String, link: String) = {
     WS.url(url).post(
       Map(
         "api_token" -> Seq(token),
-        "username"  -> Seq(reciever)
+        "username"  -> Seq(reciever),
+        "link"      -> Seq(link)
       )
     ).flatMap { response =>
       response.status match {

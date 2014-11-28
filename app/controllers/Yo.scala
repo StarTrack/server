@@ -32,17 +32,23 @@ object Yo extends Controller {
           Future.successful(NotFound(s"Yo account $yoAccount not found"))
 
         case (users, Some(trackId)) =>
-          Logger.debug(s"found trackId $trackId for users $users on radio $radioName")
-          Future.sequence(
-            users.map { user =>
-              (SpotifyWS.addToPlayList(user, trackId)
-                zip
-                Future.sequence(user.yoAccounts.map(YoWS.yoForRadio(_, radioName)))
-              )
-            }
-          )
+          SpotifyWS.trackInfos(trackId).flatMap { jsTrackInfos =>
+
+            val coverUrl = ((jsTrackInfos \ "album" \ "images").as[JsArray].value(0) \ "url").as[String]
+            play.Logger.debug("URL : " + coverUrl)
+
+            Logger.debug(s"found trackId $trackId for users $users on radio $radioName")
+            Future.sequence(
+              users.map { user =>
+                (SpotifyWS.addToPlayList(user, trackId)
+                  zip
+                  Future.sequence(user.yoAccounts.map(YoWS.yoForRadio(_, radioName, coverUrl)))
+                )
+              }
+            )
             .map { _ => Ok("Yo") }
 
+          }
         case (users, None) =>
           Future.successful( Ok("Yo : can't find Track") )
       }
