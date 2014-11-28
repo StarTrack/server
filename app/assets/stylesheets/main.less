@@ -1,5 +1,9 @@
 @import "reset.less";
 
+* {
+    -webkit-font-smoothing: antialiased;
+}
+
 body {
 
     font-family: 'Montserrat', sans-serif;
@@ -67,7 +71,46 @@ body {
     }
 
     .playlist {
-        background: green;
+
+        .header {
+            position: relative;
+            background: #353636;
+            color: #FFF;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 20px;
+
+            .play-btn {
+                padding: 10px;
+                position: absolute;
+                left: 37px;
+                bottom: -18px;
+                font-size: 14px;
+                z-index: 1;
+                background: #4D9600;
+                border-radius: 14px;
+                text-transform: uppercase;
+                color: #FFF;
+            }
+        }
+
+        ul {
+            li {
+                padding: 10px;
+                font-weight: 400;
+                border-bottom: 1px solid #A9A9AE;
+
+                .title {
+                    color: #FFF;
+                    display: block;
+                }
+
+                .meta {
+                    color: #A9A9AE;
+                    font-size: 12px;
+                }
+            }
+        }
     }
 
     .iphone {
