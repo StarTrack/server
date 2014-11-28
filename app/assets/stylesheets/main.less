@@ -2,6 +2,74 @@
 
 body {
 
+    font-family: 'Montserrat', sans-serif;
+
+    .playlist, .yo {
+        display: flex;
+        float: left;
+        width: 50%;
+    }
+
+    .yo {
+        ul {
+            height: 100%;
+            overflow: hidden;
+
+            li {
+                text-align: center;
+                color: #FFF;
+                font-weight: bold;
+                box-sizing: border-box;
+                font-size: 27px
+            }
+
+            li:nth-child(1) {
+                background: #09997D;
+                padding: 20px;
+            }
+            li:nth-child(2) {
+                background: #34485F;
+                padding: 20px;
+            }
+            li:nth-child(3) {
+                background: #F0C700;
+                padding: 20px;
+            }
+            li:nth-child(4) {
+                background: #2B83B6;
+                padding: 20px;
+            }
+            li:nth-child(5) {
+                background: #33495C;
+                padding: 20px;
+            }
+            li:nth-child(6) {
+                background: #55B496;
+                padding: 20px;
+            }
+            li:nth-child(7) {
+                background: #2B83B6;
+                padding: 20px;
+            }
+            li:nth-child(8) {
+                background: #F0C700;
+                padding: 20px;
+            }
+            li:nth-child(9) {
+                background: #34485F;
+                padding: 20px;
+            }
+            li:nth-child(10) {
+                background: #55B496;
+                padding: 20px;
+            }
+        }
+    }
+
+    .playlist {
+        background: green;
+    }
+
     .iphone {
         position: relative;
         background: #202020;
@@ -107,19 +175,5 @@ body {
             width: 45%;
             height: 45%;
         }
-    }
-
-    .playlist, .yo {
-        display: flex;
-        float: left;
-        width: 50%;
-    }
-
-    .yo {
-        background: yellow;
-    }
-
-    .playlist {
-        background: green;
     }
 }
