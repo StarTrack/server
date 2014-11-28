@@ -10,6 +10,7 @@ GET     /tracks/spotify             controllers.Tracks.spotifyTrack
 GET     /tracks/cover               controllers.Tracks.cover
 
 GET     /yo/:radio/:token           controllers.Yo.radio(token: String, radio: String, username: String)
+GET     /spoimage/:id/:slug         controllers.Yo.redirectImage(id: String, slug: String)
 
 GET     /users/me                   controllers.Users.me
 

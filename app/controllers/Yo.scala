@@ -24,35 +24,39 @@ object Yo extends Controller {
         radio <- Radios.getRadio(radioName)
         track <- radio.currentTrack
         trackId <- SpotifySearch.search(track)
-      } yield (users, trackId)
+      } yield (users, trackId, track)
 
       res.flatMap {
-        case (Nil, _) =>
+        case (Nil, _, _) =>
           Logger.debug(s"Yo account $yoAccount not found")
           Future.successful(NotFound(s"Yo account $yoAccount not found"))
 
-        case (users, Some(trackId)) =>
+        case (users, Some(trackId), track) =>
           SpotifyWS.trackInfos(trackId).flatMap { jsTrackInfos =>
 
             val coverUrl = ((jsTrackInfos \ "album" \ "images").as[JsArray].value(0) \ "url").as[String]
-            play.Logger.debug("URL : " + coverUrl)
+            var coverWithName = "https://radyo.herokuapp.com/spoimage/" + coverUrl.split("/").last + "/" + track.titre + " - " + track.interpreteMorceau.getOrElse("")
 
             Logger.debug(s"found trackId $trackId for users $users on radio $radioName")
             Future.sequence(
               users.map { user =>
                 (SpotifyWS.addToPlayList(user, trackId)
                   zip
-                  Future.sequence(user.yoAccounts.map(YoWS.yoForRadio(_, radioName, coverUrl)))
+                 Future.sequence(user.yoAccounts.map(YoWS.yoForRadio(_, radioName, coverWithName)))
                 )
               }
             )
             .map { _ => Ok("Yo") }
 
           }
-        case (users, None) =>
+        case (users, None, _) =>
           Future.successful( Ok("Yo : can't find Track") )
       }
     }
+  }
+
+  def redirectImage(id: String, slug: String) = Action {
+    Redirect(s"https://i.scdn.co/image/$id")
   }
 
 }
