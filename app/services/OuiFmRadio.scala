@@ -20,7 +20,7 @@ object OuiFmRadio extends Radio {
   }
 
   def onAir(dt: DateTime): String = {
-    s"https://www.ouifm.fr/onair.json?_=${dt.getMillis}"
+    s"http://www.ouifm.fr/onair.json?_=${dt.getMillis}"
   }
 
   /*
