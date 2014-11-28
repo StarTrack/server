@@ -1,5 +1,10 @@
 @import "reset.less";
 
+a {
+    text-decoration: none;
+    color: #000;
+}
+
 * {
     -webkit-font-smoothing: antialiased;
 }
@@ -9,19 +14,19 @@ body {
     font-family: 'Montserrat', sans-serif;
 
     .header {
-    	background: #09997D;
-    	h1 {
-    		font-size: 72px;
-    		color: #FFF;
-    		text-align: center;
+        background: #09997D;
+        h1 {
+            font-size: 72px;
+            color: #FFF;
+            text-align: center;
         padding-top: 50px;
-    	}
-    	p {
-    		font-size: 36px;
-    		color: #F2F2F2;
-    		padding: 50px;
-    		text-align: center;
-    	}
+        }
+        p {
+            font-size: 36px;
+            color: #F2F2F2;
+            padding: 50px;
+            text-align: center;
+        }
     }
 
     .playlist, .yo {
@@ -48,6 +53,9 @@ body {
                 font-weight: bold;
                 box-sizing: border-box;
                 font-size: 27px
+
+                &:first-child {
+                }
             }
 
             li:nth-child(1) {
@@ -122,6 +130,11 @@ body {
                 }
             }
         }
+    }
+
+    .signup {
+        background: #33495C;
+        color: #FFF;
     }
 
     .iphone {
