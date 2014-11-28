@@ -33,11 +33,11 @@ object User {
 
   def collection: JSONCollection = ReactiveMongoPlugin.db.collection[JSONCollection]("users")
 
-  def create(user: User): Future[LastError] = collection.insert(Json.toJson(user))
+  def create(user: User): Future[LastError] = collection.insert(Json.toJson(user.copy(login = user.login.toUpperCase)))
 
   def update(login: String, accessToken: String, refreshToken: String): Future[LastError] =
     collection.update(
-      selector = Json.obj("login" -> login),
+      selector = Json.obj("login" -> login.toUpperCase),
       update   = Json.obj( "$set" -> Json.obj(
         "accessToken"  -> accessToken,
         "refreshToken" -> refreshToken
@@ -51,13 +51,13 @@ object User {
     playlistId.map { pl =>  builder+= ( ("playlistId", JsString(pl)) ) }
 
     collection.update(
-      selector = Json.obj("login" -> login),
+      selector = Json.obj("login" -> login.toUpperCase),
       update   = Json.obj( "$set" -> new JsObject(builder.result))
     )
   }
 
   def get(login: String): Future[Option[User]] =
-    collection.find(Json.obj("login" -> login))
+    collection.find(Json.obj("login" -> login.toUpperCase))
               .cursor[User]
               .collect[Seq](1)
               .map(_.headOption)
@@ -69,7 +69,7 @@ object User {
     }
 
   def find(yoAccount: String): Future[Seq[User]] =
-    collection.find(Json.obj("yoAccounts" -> yoAccount))
+    collection.find(Json.obj("yoAccounts" -> yoAccount.toUpperCase))
               .cursor[User]
               .collect[Seq]()
 
