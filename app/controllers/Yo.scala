@@ -26,8 +26,12 @@ object Yo extends Controller {
       } yield (users, trackId)
 
       res.flatMap {
+        case ( Nil, _ ) =>
+            Logger.debug(s"Yo account $yoAccount not found")
+            Future.successful(NotFound(s"Yo account $yoAccount not found"))
+
         case ( users, Some(trackId) ) =>
-          Future.sequence(users.map { user => SpotifyWS.addToPlayList(user, trackId) })
+            Future.sequence(users.map { user => SpotifyWS.addToPlayList(user, trackId) })
                 .map { _ => Ok("Yo") }
 
         case ( users, None ) => Future.successful( Ok("Yo : can't find Track") )
