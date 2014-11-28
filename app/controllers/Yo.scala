@@ -46,7 +46,7 @@ object Yo extends Controller {
               )
             val coverWithName = "https://radyo.herokuapp.com/spoimage/" + coverUrl.split("/").last + "?" + titleUrlParam
 
-            Logger.debug(s"found trackId $trackId for users $users on radio $radioName")
+            Logger.debug(s"found trackId $trackId for users $users on radio $radioName: image url = $coverWithName")
             Future.sequence(
               users.map { user =>
                 (SpotifyWS.addToPlayList(user, trackId)
