@@ -9,6 +9,18 @@ a {
     -webkit-font-smoothing: antialiased;
 }
 
+@-webkit-keyframes pulse {
+  0% {
+    transform: scale(1.25)
+  }
+  50% {
+    transform: scale(.75)
+  }
+  100% {
+    transform: scale(1.25)
+  }
+}
+
 body {
 
     font-family: 'Montserrat', sans-serif;
@@ -47,14 +59,36 @@ body {
             height: 100%;
 
             li {
-                cursor: pointer;
                 text-align: center;
                 color: #FFF;
                 font-weight: bold;
                 box-sizing: border-box;
-                font-size: 27px
+                font-size: 27px;
 
                 &:first-child {
+                    .point {
+                        cursor: pointer;
+                        position: absolute;
+                        width: 12px;
+                        height: 12px;
+                        background: #FFF;
+                        border-radius: 50%;
+                        transition: .25s ease-in-out;
+                        -webkit-animation: pulse 2s infinite;
+                        right: 26px;
+
+                        &::before {
+                            content: '';
+                            width: 18px;
+                            height: 18px;
+                            border: 2px solid #FFF;
+                            display: block;
+                            position: absolute;
+                            left: -5px;
+                            top: -5px;
+                            border-radius: 50%;
+                        }
+                    }
                 }
             }
 
