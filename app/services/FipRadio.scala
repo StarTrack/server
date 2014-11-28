@@ -6,6 +6,7 @@ import play.api.libs.ws.WS
 import scala.concurrent.Future
 
 import play.api.Play.current
+import play.api.Logger
 import play.api.libs.concurrent.Execution.Implicits._
 
 case class Visuel(small: String, medium: String)
@@ -57,7 +58,7 @@ object FipRadio {
 
       val p = FipPlayer(currentTrack)
 
-      //println(p)
+      Logger.debug("FipRadio current: " + p)
       cachedResponse = Some(p)
       p
     }

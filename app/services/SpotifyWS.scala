@@ -8,6 +8,7 @@ import scala.concurrent._
 
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.Play.current
+import play.api.Logger
 
 import models._
 import utils.Encoding
@@ -86,19 +87,22 @@ object SpotifyWS {
 
   def addToPlayList(user: User, trackId: String): Future[_] = {
     user.playlistId.map { playlistId =>
-      play.Logger.debug("Add to playList : %s - %s - %s".format(user.login, playlistId, trackId) )
+      Logger.debug("Add to playList : %s - %s - %s".format(user.login, playlistId, trackId) )
       val url = Endpoints.add_track.format(user.login, playlistId)
 
       wsWithAuth(url, user.accessToken)
         .post( Json.toJson(Seq(trackId)) )
         .map { response =>
           response.status match {
-            case 201 => play.Logger.debug("Track was succesufly added to the playlist")
-            case err => play.Logger.error("Error while added the track to the playlist: " + response.status.toString + " - " + response.body)
+            case 201 => Logger.debug("Track was succesufly added to the playlist")
+            case err => Logger.error("Error while added the track to the playlist: " + response.status.toString + " - " + response.body)
           }
 
         }
-    }.getOrElse( Future.successful("No playList") )
+    }.getOrElse {
+      Logger.error("User doesn't have a playList")
+      Future.successful("No playList")
+    }
   }
 
   def trackInfos(trackId: String): Future[JsValue] = {
