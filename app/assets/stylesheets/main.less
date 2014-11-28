@@ -1,27 +1,87 @@
 @import "reset.less";
 
+a {
+    text-decoration: none;
+    color: #000;
+}
+
 * {
     -webkit-font-smoothing: antialiased;
+}
+
+input {
+	border: solid 1px #FFF;
+	width: 300px;
+	height: 100%;
+	padding: 10px 20px;
+	margin: 0px 10px;
+	font-size: 32px;
+	color: #FFF;
+	background: transparent;
+}
+
+input:focus {
+    background-color: #F0C700;
+   	color: #FFF;
+   	outline: none;
+   	border-color: transparent;
+   	box-shadow: none;
+}
+
+select {
+	background-color: #E83F42;
+	border: 0px;
+	width: 250px;
+	height: 100%;
+	padding: 20px;
+	font-size: 32px;
+	color: #FFF;
+}
+
+select:focus {
+    background-color: #F0C700;
+   	color: #FFF;
+}
+
+.fat-button {
+  display: block;
+  margin: auto;
+  color: black;
+  height: 200px;
+  line-height: 200px;
+  vertical-align: middle;
+  /*width: 300px;*/
+  border : none;
+  text-decoration: none;
+  background: #2B83B6;
+}
+.fat-button:hover{
+	background: rgba(0,0,0,0.1);
 }
 
 body {
 
     font-family: 'Montserrat', sans-serif;
 
+    .main {
+    	overflow: hidden;
+    }
+
+
     .header {
-    	background: #09997D;
-    	h1 {
-    		font-size: 72px;
-    		color: #FFF;
-    		text-align: center;
+        background: #09997D;
+        h1 {
+            font-size: 72px;
+            color: #FFF;
+            text-align: center;
         padding-top: 50px;
-    	}
-    	p {
-    		font-size: 36px;
-    		color: #F2F2F2;
-    		padding: 50px;
-    		text-align: center;
-    	}
+        }
+        p {
+            font-size: 36px;
+            color: #F2F2F2;
+            padding: 50px;
+            text-align: center;
+        }
     }
 
     .playlist, .yo {
@@ -47,7 +107,10 @@ body {
                 color: #FFF;
                 font-weight: bold;
                 box-sizing: border-box;
-                font-size: 27px
+                font-size: 27px;
+
+                &:first-child {
+                }
             }
 
             li:nth-child(1) {
@@ -123,6 +186,21 @@ body {
             }
         }
     }
+
+    .signup {
+        background: #33495C;
+        color: #33495C;
+        text-align: center;
+        padding: 20px;
+
+	    a {
+		    font-size: 48px;
+		    width: 100%;
+		    height: 100%;
+		    color: white;
+	    }
+    }
+
 
     .iphone {
         position: relative;
