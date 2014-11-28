@@ -37,7 +37,7 @@ object OuiFmRadio extends Radio {
     val current = (json \ "rock").apply(0)
     Logger.debug(s"parsing json from ouifm into track: $current")
     val title = (current \ "title").as[String]
-    val artist = (current \ "title").asOpt[String]
+    val artist = (current \ "artist").asOpt[String]
     val endTime = (current \ "ts").as[Long]
     val startTime = DateTime.now().getMillis
     Track(startTime, endTime, title, artist)
