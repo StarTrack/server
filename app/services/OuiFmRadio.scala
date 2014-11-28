@@ -13,14 +13,13 @@ object OuiFmRadio extends Radio {
   val name = "ouifm"
 
   def currentTrack(): Future[Track] = {
-    val now = DateTime.now()
-    WS.url(onAir(now)).get().map { response =>
+    WS.url(onAir()).get().map { response =>
       extractCurrentTrack(response.json)
     }
   }
 
-  def onAir(dt: DateTime): String = {
-    s"http://www.ouifm.fr/onair.json?_=${dt.getMillis}"
+  def onAir(dt: Option[DateTime] = None): String = {
+    "http://www.ouifm.fr/onair.json" + dt.map(t => "?_=" + t.getMillis).getOrElse("")
   }
 
   /*
