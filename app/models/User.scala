@@ -47,17 +47,17 @@ object User {
   def update(login: String, yoAccounts: Seq[String], playlistId: Option[String]): Future[LastError] = {
     val builder = Seq.newBuilder[(String, JsValue)]
 
-    builder += ( ("yoAccounts", Json.toJson(yoAccounts)) )
+    builder += ( ("yoAccounts", Json.toJson(yoAccounts.map(_.toUpperCase))) )
     playlistId.map { pl =>  builder+= ( ("playlistId", JsString(pl)) ) }
 
     collection.update(
-      selector = Json.obj("login" -> login.toUpperCase),
+      selector = Json.obj("login" -> login),
       update   = Json.obj( "$set" -> new JsObject(builder.result))
     )
   }
 
   def get(login: String): Future[Option[User]] =
-    collection.find(Json.obj("login" -> login.toUpperCase))
+    collection.find(Json.obj("login" -> login))
               .cursor[User]
               .collect[Seq](1)
               .map(_.headOption)
