@@ -30,10 +30,19 @@ object Yo extends Controller {
         case (Nil, _) =>
           Logger.debug(s"Yo account $yoAccount not found")
           Future.successful(NotFound(s"Yo account $yoAccount not found"))
+
         case (users, Some(trackId)) =>
           Logger.debug(s"found trackId $trackId for users $users on radio $radioName")
-          Future.sequence(users.map { user => SpotifyWS.addToPlayList(user, trackId) })
-              .map { _ => Ok("Yo") }
+          Future.sequence(
+            users.map { user =>
+              (SpotifyWS.addToPlayList(user, trackId)
+                zip
+                Future.sequence(user.yoAccounts.map(YoWS.yoForRadio(_, radioName)))
+              )
+            }
+          )
+            .map { _ => Ok("Yo") }
+
         case (users, None) =>
           Future.successful( Ok("Yo : can't find Track") )
       }
