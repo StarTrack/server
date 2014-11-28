@@ -17,5 +17,5 @@ object Radios {
     }
   }
 
-  val availableRadios: Set[Radio] = Set(FipRadio, OuiFmRadio)
+  val availableRadios: Set[Radio] = Set(FipRadio, OuiFmRadio, NovaRadio)
 }
