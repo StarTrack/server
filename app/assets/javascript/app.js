@@ -1,14 +1,14 @@
 $(document).ready(function() {
 
     var songs = [{
-        title: 'Trouble',
-        meta: 'Jose James - No Begining No End'
+        title: 'Pastime Paradise',
+        meta: 'Ray Barretto - La Cuna'
     },{
-        title: 'Trouble',
-        meta: 'Jose James - No Begining No End'
+        title: 'Wicked Game',
+        meta: 'Chris Isaak - No Begining No End'
     },{
-        title: 'Trouble',
-        meta: 'Jose James - No Begining No End'
+        title: 'Le Dicen Dolor',
+        meta: 'Bio Ritmo - Puerta del Sur'
     }];
 
     $('.yo .iphone li').click(function() {
