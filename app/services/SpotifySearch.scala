@@ -14,17 +14,13 @@ object SpotifySearch {
   val url = "http://ws.spotify.com/search/1/track.json"
 
   def search(track: Track): Future[Option[String]] = {
-    val res = track.interpreteMorceau.map { artist =>
+    track.interpreteMorceau.map { artist =>
       search(artist, track.titre).flatMap {
         case a@Some(_) => Future.successful(a)
         case None      => search(track.titre)
       }
     }.getOrElse( Future.successful(None) )
 
-    res.map {
-      case None => Some("spotify:track:7nPc4tfJCRvcxxt9Xz3ugx")
-      case t    => t
-    }
   }
 
   def search(track: String): Future[Option[String]] = {

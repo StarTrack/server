@@ -58,14 +58,32 @@ object Yo extends Controller {
             .map { _ => Ok("Yo") }
 
           }
-        case (users, None, _) =>
-          Future.successful( Ok("Yo : can't find Track") )
+        case (users, None, track) =>
+
+            val titleUrlParam =
+              Http.encodeUrlParams(
+                Map(
+                  "title" -> (track.titre + " - " + track.interpreteMorceau.getOrElse(""))
+                )
+              )
+            val songNotFound = "https://radyo.herokuapp.com/songNotFound?" + titleUrlParam
+
+            Future.sequence(
+              users.map { user =>
+                 Future.sequence(user.yoAccounts.map(YoWS.yoForRadio(_, radioName, songNotFound)))
+              }
+            )
+            .map { _ => Ok("Yo : can't find Track") }
       }
     }
   }
 
   def redirectImage(id: String, title: String) = Action {
     Ok(views.html.spotify_image(id, title))
+  }
+
+  def songNotFound(title: String) = Action {
+    Ok(views.html.song_not_found(title))
   }
 
 }

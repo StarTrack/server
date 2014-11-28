@@ -11,6 +11,7 @@ GET     /tracks/cover               controllers.Tracks.cover
 
 GET     /yo/:radio/:token           controllers.Yo.radio(token: String, radio: String, username: String)
 GET     /spoimage/:id               controllers.Yo.redirectImage(id: String, title: String)
+GET     /songNotFound               controllers.Yo.songNotFound(title: String)
 
 GET     /users/me                   controllers.Users.me
 

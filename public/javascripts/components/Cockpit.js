@@ -15,7 +15,7 @@ var Cockpit = React.createClass({
         <div class="container">
           <p>IF
             <input autofocus className="yoUser" type="text" placeholder="Yo username" onKeyUp={debouncedSend} defaultValue={this.props.user.yoAccounts || ""}/>
-            Yoes FIP <br/>
+            Yoes FIP or OUIFM or YONOVA<br/>
             then save the current track <br/>to this playlist&nbsp;
             <select className="playlist" onChange={this.sendYoers}>
             {options}
