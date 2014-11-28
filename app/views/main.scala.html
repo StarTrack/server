@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title></title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/style.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    </head>
-    <body>
-      <header>
-        <h1>RADYO</h1>
-        <p>The fastest way to add radio track</p>
-      </header>
-      <section>
-        <div class="yo">
-        </div>
-        <div class="playlist">
-        </div>
-      </section>
-    </body>
+  <head>
+    <title></title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <header>
+      <h1>RADYO</h1>
+      <p>The fastest way to add radio track</p>
+    </header>
+    <section>
+      <div class="yo">
+        @iphone()
+      </div>
+      <div class="playlist">
+        @iphone()
+      </div>
+    </section>
+  </body>
 </html>
