@@ -32,7 +32,8 @@ object Track {
 
 case class FipPlayer(current: Track)
 
-object FipRadio {
+object FipRadio extends Radio {
+  val name = "fip"
   private var cachedResponse: Option[FipPlayer] = None
 
   def currentTrack(): Future[Track] = getFipPlayer().map(_.current)
