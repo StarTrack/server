@@ -30,9 +30,20 @@ object Yo extends Controller {
       } yield (users, trackId, track)
 
       res.flatMap {
-        case (Nil, _, _) =>
+        case (Nil, Some(trackId), track) =>
           Logger.debug(s"Yo account $yoAccount not found")
-          Future.successful(NotFound(s"Yo account $yoAccount not found"))
+          SpotifyWS.trackInfos(trackId).flatMap { jsTrackInfos =>
+            val coverUrl = ((jsTrackInfos \ "album" \ "images").as[JsArray].value(0) \ "url").as[String]
+            val titleUrlParam = Http.encodeUrlParams(
+              Map(
+                "title" -> (track.titre + " - " + track.interpreteMorceau.getOrElse(""))
+              )
+            )
+            val coverWithName = "https://radyo.herokuapp.com/spoimage/" + coverUrl.split("/").last + "?" + titleUrlParam
+            YoWS.yoForRadio(yoAccount, radioName, coverWithName).map{ _ =>
+              Ok(s"Yo: user not found")
+            }
+          }
 
         case (users, Some(trackId), track) =>
           SpotifyWS.trackInfos(trackId).flatMap { jsTrackInfos =>
@@ -74,6 +85,19 @@ object Yo extends Controller {
               }
             )
             .map { _ => Ok("Yo : can't find Track") }
+
+        case (_, None, track) =>
+          val titleUrlParam =
+            Http.encodeUrlParams(
+              Map(
+                "title" -> (track.titre + " - " + track.interpreteMorceau.getOrElse(""))
+              )
+            )
+          val songNotFound = "https://radyo.herokuapp.com/songNotFound?" + titleUrlParam
+          YoWS.yoForRadio(yoAccount, radioName, songNotFound).map{_ =>
+            Ok("Yo: can't find track nor user")
+          }
+
       }
     }
   }
