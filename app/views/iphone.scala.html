@@ -1,9 +1,7 @@
-@()(content: Html)
+@(masked: Boolean = false)(content: Html)
 
 <div class="iphone">
-  <div class="lock"></div>
-  <div class="volume up"></div>
-  <div class="volume down"></div>
+  <div class="mask @if(masked) { on } else { off }"></div>
   <div class="camera"></div>
   <div class="speaker"></div>
   <div class="screen">

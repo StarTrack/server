@@ -10,15 +10,15 @@ a {
 }
 
 @-webkit-keyframes pulse {
-  0% {
-    transform: scale(1.25)
-  }
-  50% {
-    transform: scale(.75)
-  }
-  100% {
-    transform: scale(1.25)
-  }
+    0% {
+        transform: scale(1.25)
+    }
+    50% {
+        transform: scale(.75)
+    }
+    100% {
+        transform: scale(1.25)
+    }
 }
 
 input {
@@ -56,16 +56,15 @@ select:focus {
 }
 
 .fat-button {
-  display: block;
-  margin: auto;
-  color: black;
-  height: 200px;
-  line-height: 200px;
-  vertical-align: middle;
-  /*width: 300px;*/
-  border : none;
-  text-decoration: none;
-  background: #2B83B6;
+    display: block;
+    margin: auto;
+    color: black;
+    height: 200px;
+    line-height: 200px;
+    vertical-align: middle;
+    border : none;
+    text-decoration: none;
+    background: #2B83B6;
 }
 .fat-button:hover{
     background: rgba(0,0,0,0.1);
@@ -73,39 +72,34 @@ select:focus {
 
 body {
 
+    background: #F0C700;
     font-family: 'Montserrat', sans-serif;
-
-    .main {
-        overflow: hidden;
-    }
-
 
     .header {
         background: #09997D;
+
         h1 {
-            font-size: 72px;
+            padding: 20px;
+            font-size: 60px;
             color: #FFF;
-            text-align: center;
-            padding-top: 50px;
-        }
-        p {
-            font-size: 36px;
-            color: #F2F2F2;
-            padding: 50px;
             text-align: center;
         }
     }
 
-    .playlist, .yo {
-        display: flex;
-        float: left;
-        width: 50%;
-        background: #F0C700;
-        padding-top: 50px;
-        padding-bottom: 50px;
+    .demo {
+        overflow: hidden;
+        width: 640px;
+        box-sizing: border-box;
+        margin: 0 auto;
+        padding-top: 75px;
+        padding-bottom: 75px;
 
-        ul {
-            overflow: hidden;
+        .playlist, .yo {
+            float: left;
+
+            ul {
+                overflow: hidden;
+            }
         }
     }
 
@@ -152,13 +146,12 @@ body {
                 }
 
                 .yo-sent.done {
-                    transition: opacity 1s;
+                    transition: opacity .25s;
                     opacity: 1;
                 }
 
                 &.fip:not(.loading) {
-                    .point {
-                        cursor: pointer;
+                    .point:not(.disabled) {
                         position: absolute;
                         width: 12px;
                         height: 12px;
@@ -205,6 +198,7 @@ body {
     }
 
     .playlist {
+        margin-left: 100px;
 
         ul {
             height: 343px;
@@ -275,30 +269,25 @@ body {
         margin: 0 auto;
         border-radius: 1.5em;
 
-        .lock {
+        .mask {
             position: absolute;
-            background: #202020;
-            width: 1%;
-            height: 5%;
-            top: 12.5%;
-            left: -1%;
-            border-top-left-radius: .5em;
-            border-bottom-left-radius: .5em;
-        }
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            border-radius: 24px;
+            background: rgba(18, 18, 24, 0.59);
+            opacity: 0;
 
-        .volume {
-            position: absolute;
-            background: #202020;
-            width: 1%;
-            height: 4%;
-            top: 23%;
-            left: -1%;
-            border-top-left-radius: .5em;
-            border-bottom-left-radius: .5em;
-        }
+            &.off {
+                display: none;
+            }
 
-        .volume.down {
-            top: 31%;
+            &.on {
+                opacity: 1;
+                transition: opacity 0.25s;
+            }
         }
 
         .camera {

@@ -12,52 +12,54 @@
   <body>
     <header class="header">
       <h1>RADYO</h1>
-      <p>Ajoutez le morceau à l'antenne dans votre playlist Spotify</p>
+      <!-- <p>Ajoutez le morceau à l'antenne dans votre playlist Spotify</p> -->
     </header>
     <!-- <audio src="http://mp3lg.tdf-cdn.com/fip/all/fiphautdebit.mp3" controls="controls"> -->
     <!-- </audio> -->
     <section class="main">
-      <div class="yo">
-        @iphone() {
-        <ul>
-          <li class="fip">
-            <span class="name">FIP</span>
-            <span class="yo-sent">yo sent!</span>
-            <span class="point"></span>
-          </li>
-          <li>ouifm</li>
-          <li>yonova</li>
-          <li>nachos</li>
-          <li>nna</li>
-          <li>clara</li>
-        </ul>
-        }
-      </div>
-      <div class="playlist">
-        @iphone() {
-        <div class="header">
-          Découverte radio
-          <div class="play-btn">Lecture aléatoire</div>
+      <div class="demo">
+        <div class="yo">
+          @iphone() {
+          <ul>
+            <li class="fip">
+              <span class="name">FIP</span>
+              <span class="yo-sent">yo sent!</span>
+              <span class="point"></span>
+            </li>
+            <li>ouifm</li>
+            <li>yonova</li>
+            <li>nachos</li>
+            <li>nna</li>
+            <li>clara</li>
+          </ul>
+          }
         </div>
-        <ul>
-          <li>
-            <span class="title">Trouble</span>
-            <span class="meta">Jose James - No Beginning No End</span>
-          </li>
-          <li>
-            <span class="title">New York USA</span>
-            <span class="meta">Mick Harvey - Intoxicted Man</span>
-          </li>
-          <li>
-            <span class="title">Riverside</span>
-            <span class="meta">Agnes Obel - Philharmonics</span>
-          </li>
-        </ul>
-        }
+        <div class="playlist">
+          @iphone(masked = true) {
+          <div class="header">
+            Découverte radio
+            <div class="play-btn">Lecture aléatoire</div>
+          </div>
+          <ul>
+            <li>
+              <span class="title">Trouble</span>
+              <span class="meta">Jose James - No Beginning No End</span>
+            </li>
+            <li>
+              <span class="title">New York USA</span>
+              <span class="meta">Mick Harvey - Intoxicted Man</span>
+            </li>
+            <li>
+              <span class="title">Riverside</span>
+              <span class="meta">Agnes Obel - Philharmonics</span>
+            </li>
+          </ul>
+          }
+        </div>
       </div>
     </section>
-    <section class="signup">
-      <a href="https://radyo.herokuapp.com/auth">CONNECTEZ-VOUS AVEC SPOTIFY</a>
-    </section>
+    <!-- <section class="signup"> -->
+    <!--   <a href="https://radyo.herokuapp.com/auth">CONNECTEZ-VOUS AVEC SPOTIFY</a> -->
+    <!-- </section> -->
   </body>
 </html>
