@@ -86,7 +86,7 @@ body {
             font-size: 72px;
             color: #FFF;
             text-align: center;
-        padding-top: 50px;
+            padding-top: 50px;
         }
         p {
             font-size: 36px;
@@ -114,13 +114,49 @@ body {
             height: 100%;
 
             li {
+                position: relative;
                 text-align: center;
+                text-transform: uppercase;
                 color: #FFF;
                 font-weight: bold;
                 box-sizing: border-box;
                 font-size: 27px;
+                padding: 20px;
+                cursor: url('/assets/images/touch-cursor.png'), auto;
 
-                &:first-child {
+                .yo-sent {
+                    opacity: 0;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    line-height: 67px;
+                }
+
+                &.loading {
+                    position: relative;
+
+                    &:not(.done)::before {
+                        content: '';
+                        background: url('/assets/images/yo-spinner.gif');
+                        position: absolute;
+                        height: 30px;
+                        width: 30px;
+                        left: 44%;
+                    }
+
+                    .name {
+                        opacity: 0;
+                    }
+                }
+
+                .yo-sent.done {
+                    transition: opacity 1s;
+                    opacity: 1;
+                }
+
+                &.fip:not(.loading) {
                     .point {
                         cursor: pointer;
                         position: absolute;
@@ -149,27 +185,21 @@ body {
 
             li:nth-child(1) {
                 background: #09997D;
-                padding: 20px;
             }
             li:nth-child(2) {
                 background: #34485F;
-                padding: 20px;
             }
             li:nth-child(3) {
                 background: #F0C700;
-                padding: 20px;
             }
             li:nth-child(4) {
                 background: #2B83B6;
-                padding: 20px;
             }
             li:nth-child(5) {
                 background: #33495C;
-                padding: 20px;
             }
             li:nth-child(6) {
                 background: #55B496;
-                padding: 20px;
             }
         }
     }
