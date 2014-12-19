@@ -129,8 +129,7 @@ body {
         width: 640px;
         box-sizing: border-box;
         margin: 0 auto;
-        padding-top: 60px;
-        padding-bottom: 75px;
+        padding-top: 45px;
 
         .playlist, .yo {
             float: left;
@@ -272,12 +271,30 @@ body {
 
                 .title {
                     color: #FFF;
+                    opacity: 1;
                     display: block;
                 }
 
                 .meta {
                     color: #A9A9AE;
                     font-size: 12px;
+                }
+
+                &.loading {
+                    position: relative;
+
+                    &:not(.done)::before {
+                        content: '';
+                        background: url('/assets/images/yo-spinner-black.gif');
+                        position: absolute;
+                        height: 30px;
+                        width: 30px;
+                        left: 44%;
+                    }
+
+                    .title, .meta {
+                        opacity: 0;
+                    }
                 }
             }
         }

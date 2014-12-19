@@ -62,8 +62,13 @@ $(document).ready(function() {
         if(song) {
             var $title = '<span class="title">$title</span>'.replace(/\$title/g, song.title);
             var $meta = '<span class="meta">$meta</title>'.replace(/\$meta/g, song.meta);
-            var $song = '<li>' + $title + $meta + '</li>';
+            var $song = '<li class="loading">' + $title + $meta + '</li>';
             $playlist().find('ul').append($song);
+            return delay(1000).then(function() {
+                $playlist().find('ul li:last-child').removeClass('loading');
+            });
+        } else {
+            return delay(0);
         }
     }
 
